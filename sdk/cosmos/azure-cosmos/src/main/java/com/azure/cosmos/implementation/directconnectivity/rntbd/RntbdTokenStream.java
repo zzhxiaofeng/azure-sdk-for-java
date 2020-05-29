@@ -37,7 +37,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
 
     // region Methods
 
-    final int computeCount() {
+    final int getValidCount() {
 
         int count = 0;
 

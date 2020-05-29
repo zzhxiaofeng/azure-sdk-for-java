@@ -202,7 +202,7 @@ public class StoreReader {
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Flux.error(new GoneException());
         }
-        List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
+        List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>(resolveApiResults.size());
         int uriIndex = StoreReader.generateNextRandom(resolveApiResults.size());
 
         while (resolveApiResults.size() > 0) {
