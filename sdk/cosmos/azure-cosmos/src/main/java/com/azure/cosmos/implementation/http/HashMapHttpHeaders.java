@@ -59,7 +59,7 @@ public class HashMapHttpHeaders implements HttpHeaders {
      * @return this HttpHeaders
      */
     public void put(String name, String value) {
-        final String headerKey = name.toLowerCase(Locale.ROOT);
+        final String headerKey = normalizeName(name);
         if (value == null) {
             headers.remove(headerKey);
         } else {
@@ -77,7 +77,7 @@ public class HashMapHttpHeaders implements HttpHeaders {
      * @return this HttpHeaders
      */
     public void remove(String name) {
-        final String headerKey = name.toLowerCase(Locale.ROOT);
+        final String headerKey = normalizeName(name);
         headers.remove(headerKey);
     }
 
@@ -89,7 +89,7 @@ public class HashMapHttpHeaders implements HttpHeaders {
      * @return The String value of the header, or null if the header isn't found
      */
     public String getValue(String name) {
-        return headers.get(name.toLowerCase(Locale.ROOT));
+        return headers.get(normalizeName(name));
     }
 
     /**
@@ -115,5 +115,10 @@ public class HashMapHttpHeaders implements HttpHeaders {
      */
     public Map<String, String> exportHeaders() {
         return headers;
+    }
+
+    private String normalizeName(String input) {
+        // return input.toLowerCase(Locale.ROOT);
+        return  input;
     }
 }
