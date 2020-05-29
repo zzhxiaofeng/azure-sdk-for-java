@@ -111,11 +111,11 @@ public class BarrierRequestHelper {
         if (request.getPartitionKeyRangeIdentity() != null) {
             barrierLsnRequest.routeTo(request.getPartitionKeyRangeIdentity());
         }
-        if (request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY) != null) {
+        if (request.getHeaders().getValue(HttpConstants.Headers.PARTITION_KEY) != null) {
             barrierLsnRequest.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, request.getHeaders().getValue(HttpConstants.Headers.PARTITION_KEY));
             barrierLsnRequest.setPartitionKeyInternal(request.getPartitionKeyInternal());
         }
-        if (request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID) != null) {
+        if (request.getHeaders().getValue(WFConstants.BackendHeaders.COLLECTION_RID) != null) {
             barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().getValue(WFConstants.BackendHeaders.COLLECTION_RID));
         }
 

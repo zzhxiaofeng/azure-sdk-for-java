@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
@@ -77,7 +78,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
                 OperationType.Read,
                 ResourceType.DocumentCollection,
                 path,
-                new HttpHeaders());
+                HttpHeadersFactory.create());
 
         request.getHeaders().put(HttpConstants.Headers.X_DATE, Utils.nowAsRFC1123());
 

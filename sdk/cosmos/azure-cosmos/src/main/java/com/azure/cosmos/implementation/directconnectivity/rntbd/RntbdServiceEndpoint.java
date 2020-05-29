@@ -3,12 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.guava27.Strings;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -264,7 +265,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
             final String reason = cause.getMessage();
 
-            HttpHeaders httpHeaders = new HttpHeaders();
+            HttpHeaders httpHeaders = HttpHeadersFactory.create();
             httpHeaders.put(Headers.ACTIVITY_ID, activityId.toString());
 
             final GoneException goneException = new GoneException(

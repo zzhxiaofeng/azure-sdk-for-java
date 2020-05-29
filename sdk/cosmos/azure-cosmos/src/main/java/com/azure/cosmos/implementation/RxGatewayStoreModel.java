@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.*;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
@@ -11,10 +11,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -167,7 +163,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private HttpHeaders getHttpRequestHeaders(HttpHeaders reqeustheaders) {
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = HttpHeadersFactory.create();
         // Add default headers.
         for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
             if (reqeustheaders.getValue(entry.getKey()) == null) {
@@ -178,12 +174,12 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         // Add override headers.
         if (reqeustheaders != null) {
-            for (HttpHeader entry : reqeustheaders) {
+            for (Map.Entry<String, String> entry : reqeustheaders.exportHeaders().entrySet()) {
                 if (entry.getValue() == null) {
                     // netty doesn't allow setting null value in header
-                    httpHeaders.put(entry.getName(), "");
+                    httpHeaders.put(entry.getKey(), "");
                 } else {
-                    httpHeaders.put(entry.getName(), entry.getValue());
+                    httpHeaders.put(entry.getKey(), entry.getValue());
                 }
             }
         }

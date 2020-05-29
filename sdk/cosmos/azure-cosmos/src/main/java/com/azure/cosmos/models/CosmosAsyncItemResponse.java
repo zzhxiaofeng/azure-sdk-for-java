@@ -3,13 +3,13 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
-import  com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 
 import java.time.Duration;
 import java.time.ZoneOffset;

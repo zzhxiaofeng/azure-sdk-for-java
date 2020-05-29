@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedOptions;
@@ -72,7 +73,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         for (Map.Entry<PartitionKeyRange, String> entry : partitionKeyRangeToContinuationTokenMap.entrySet()) {
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (partitionKeyRange,
                                                                                                      continuationToken, pageSize) -> {
-                HttpHeaders headers = new HttpHeaders(commonRequestHeaders);
+                HttpHeaders headers = HttpHeadersFactory.create(commonRequestHeaders.size() + 2);
+                headers.putAll(commonRequestHeaders.exportHeaders());
                 headers.put(HttpConstants.Headers.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.Headers.PAGE_SIZE, Strings.toString(pageSize));
 
@@ -166,7 +168,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (
                 partitionKeyRange,
                 continuationToken, pageSize) -> {
-                HttpHeaders headers = new HttpHeaders(commonRequestHeaders);
+                HttpHeaders headers = HttpHeadersFactory.create(commonRequestHeaders.size() + 2);
+                headers.putAll(commonRequestHeaders.exportHeaders());
                 headers.put(HttpConstants.Headers.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.Headers.PAGE_SIZE, Strings.toString(pageSize));
 

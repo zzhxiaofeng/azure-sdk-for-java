@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.*;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
@@ -30,9 +30,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.RequestVerb;
 import io.netty.handler.codec.http.HttpMethod;
@@ -255,7 +252,8 @@ public class GatewayAddressCache implements IAddressCache {
 
         addressQuery.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
 
-        HttpHeaders headers = new HttpHeaders(defaultRequestHeaders);
+        HttpHeaders headers = HttpHeadersFactory.create();
+        headers.putAll(defaultRequestHeaders);
         if (forceRefresh) {
             headers.put(HttpConstants.Headers.FORCE_REFRESH, "true");
         }
@@ -449,7 +447,8 @@ public class GatewayAddressCache implements IAddressCache {
         );
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
-        HttpHeaders headers = new HttpHeaders(defaultRequestHeaders);
+        HttpHeaders headers = HttpHeadersFactory.create();
+        headers.putAll(defaultRequestHeaders);
 
         if (forceRefresh) {
             headers.put(HttpConstants.Headers.FORCE_REFRESH, "true");
@@ -529,7 +528,7 @@ public class GatewayAddressCache implements IAddressCache {
                 collection.getResourceId(),
                 ResourceType.DocumentCollection,
                 //       AuthorizationTokenType.PrimaryMasterKey
-                new HttpHeaders());
+                HttpHeadersFactory.create());
         for (int i = 0; i < partitionKeyRangeIdentities.size(); i += batchSize) {
 
             int endIndex = i + batchSize;

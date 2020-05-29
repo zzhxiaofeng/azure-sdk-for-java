@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import  com.azure.core.http.HttpHeaders;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

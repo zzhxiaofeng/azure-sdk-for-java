@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
@@ -71,14 +72,14 @@ public class Utils {
     }
 
     public  static HttpHeaders clone(HttpHeaders inputHeaders) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        inputHeaders.forEach(entry -> httpHeaders.put(entry.getName(), entry.getValue()));
+        HttpHeaders httpHeaders = HttpHeadersFactory.create();
+        inputHeaders.exportHeaders().entrySet().forEach(entry -> httpHeaders.put(entry.getKey(), entry.getValue()));
 
         return httpHeaders;
     }
 
     public static HttpHeaders newHeadersWithRequestCharge(double requestCharge) {
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = HttpHeadersFactory.create();
         httpHeaders.put(HttpConstants.Headers.REQUEST_CHARGE,
             String.valueOf(requestCharge));
 

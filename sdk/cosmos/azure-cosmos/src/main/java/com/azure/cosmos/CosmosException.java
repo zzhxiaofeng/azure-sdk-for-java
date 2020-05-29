@@ -5,12 +5,13 @@ package com.azure.cosmos;
 
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -57,7 +58,7 @@ public class CosmosException extends AzureException {
         super(message, cause);
         this.statusCode = statusCode;
         this.requestTimeline = RequestTimeline.empty();
-        this.responseHeaders = responseHeaders == null ? new HttpHeaders() : responseHeaders;
+        this.responseHeaders = responseHeaders == null ? HttpHeadersFactory.create() : responseHeaders;
     }
 
     /**
@@ -292,10 +293,10 @@ public class CosmosException extends AzureException {
             return null;
         }
 
-        HttpHeaders filteredHeaders = new HttpHeaders();
-        for(HttpHeader entry : requestHeaders) {
-            if(! entry.getName().equalsIgnoreCase(HttpConstants.Headers.AUTHORIZATION)) {
-                filteredHeaders.put(entry.getName(), entry.getValue());
+        HttpHeaders filteredHeaders = HttpHeadersFactory.create();
+        for(final Map.Entry<String, String> header : requestHeaders.exportHeaders().entrySet()) {
+            if(! header.getKey().equalsIgnoreCase(HttpConstants.Headers.AUTHORIZATION)) {
+                filteredHeaders.put(header.getKey(), header.getValue());
             }
         }
 

@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -122,7 +123,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.forceNameCacheRefresh = false;
         this.resourceType = resourceType;
         this.contentAsByteArray = toByteArray(byteBuffer);
-        this.headers = headers != null ? headers : new HttpHeaders();
+        this.headers = headers != null ? headers : HttpHeadersFactory.create();
         this.activityId = Utils.randomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
@@ -154,7 +155,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
-        this.headers = headers != null ? headers : new HttpHeaders();
+        this.headers = headers != null ? headers : HttpHeadersFactory.create();
         this.activityId = Utils.randomUUID();
         this.isFeed = false;
         PathInfo pathInfo = new PathInfo(false, null, null, false);
@@ -660,7 +661,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                 resourceFullName,
                 resourceType,
                 (ByteBuffer) null,
-                new HttpHeaders(),
+                HttpHeadersFactory.create(),
                 true,
                 AuthorizationTokenType.PrimaryMasterKey
         );
@@ -675,7 +676,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                 resourceFullName,
                 resourceType,
                 (ByteBuffer) null,
-                new HttpHeaders(),
+                HttpHeadersFactory.create(),
                 true,
                 authorizationTokenType
         );
@@ -691,7 +692,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                 resourceFullName,
                 resourceType,
                 resourceContent,
-                new HttpHeaders(),
+                HttpHeadersFactory.create(),
                 true,
                 AuthorizationTokenType.PrimaryMasterKey
         );
@@ -708,7 +709,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                 resourceFullName,
                 resourceType,
                 resourceContent,
-                new HttpHeaders(),
+                HttpHeadersFactory.create(),
                 true,
                 authorizationTokenType
         );

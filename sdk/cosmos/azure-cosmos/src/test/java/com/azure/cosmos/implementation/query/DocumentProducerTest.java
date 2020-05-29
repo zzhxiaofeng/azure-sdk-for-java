@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -723,7 +724,9 @@ public class DocumentProducerTest {
             Map<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
-            return BridgeInternal.createCosmosException(HttpConstants.StatusCodes.GONE, new CosmosError(), new HttpHeaders(headers));
+            HttpHeaders httpHeaders = HttpHeadersFactory.create();
+            httpHeaders.putAll(headers);
+            return BridgeInternal.createCosmosException(HttpConstants.StatusCodes.GONE, new CosmosError(), httpHeaders);
         }
 
         protected void capture(String partitionId, CapturedInvocation captureInvocation) {

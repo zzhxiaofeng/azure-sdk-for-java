@@ -3,9 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
@@ -55,7 +56,8 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
             int currentAttempt = count.getAndIncrement();
             if (currentAttempt == 0) {
-                HttpHeaders header = new HttpHeaders(ImmutableMap.of(
+                HttpHeaders header = HttpHeadersFactory.create();
+                header.putAll(ImmutableMap.of(
                         HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH)));
 
@@ -86,7 +88,8 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             if (currentAttempt == 0) {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             } else {
-                HttpHeaders header = new HttpHeaders(ImmutableMap.of(
+                HttpHeaders header = HttpHeadersFactory.create();
+                header.putAll(ImmutableMap.of(
                         HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(2)));
 
@@ -122,7 +125,8 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             }
             int currentAttempt = count.getAndIncrement();
             if (currentAttempt == 0) {
-                HttpHeaders header = new HttpHeaders(ImmutableMap.of(
+                HttpHeaders header = HttpHeadersFactory.create();
+                header.putAll(ImmutableMap.of(
                         HttpConstants.Headers.SUB_STATUS,
                         Integer.toString(2)));
 

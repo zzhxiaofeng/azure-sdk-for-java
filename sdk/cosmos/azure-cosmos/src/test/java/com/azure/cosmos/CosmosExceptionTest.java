@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ForbiddenException;
@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -57,54 +58,51 @@ public class CosmosExceptionTest {
     public void headerNotNull1() {
         CosmosException dce = BridgeInternal.createCosmosException(0);
         assertThat(dce.getResponseHeaders()).isNotNull();
-        assertThat(dce.getResponseHeaders()).isEmpty();
+        assertThat(dce.getResponseHeaders().exportHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull2() {
         CosmosException dce = BridgeInternal.createCosmosException(0, "dummy");
         assertThat(dce.getResponseHeaders()).isNotNull();
-        assertThat(dce.getResponseHeaders()).isEmpty();
+        assertThat(dce.getResponseHeaders().exportHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull3() {
         CosmosException dce = BridgeInternal.createCosmosException(0, new RuntimeException());
         assertThat(dce.getResponseHeaders()).isNotNull();
-        assertThat(dce.getResponseHeaders()).isEmpty();
+        assertThat(dce.getResponseHeaders().exportHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull4() {
         CosmosException dce = BridgeInternal.createCosmosException(0, (CosmosError) null, (HttpHeaders) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
-        assertThat(dce.getResponseHeaders()).isEmpty();
+        assertThat(dce.getResponseHeaders().exportHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull5() {
         CosmosException dce = BridgeInternal.createCosmosException((String) null, 0, (CosmosError) null, (HttpHeaders) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
-        assertThat(dce.getResponseHeaders()).isEmpty();
+        assertThat(dce.getResponseHeaders().exportHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull6() {
         CosmosException dce = BridgeInternal.createCosmosException((String) null, (Exception) null, (HttpHeaders) null, 0, (String) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
-        assertThat(dce.getResponseHeaders()).isEmpty();
+        assertThat(dce.getResponseHeaders().exportHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull7() {
         ImmutableMap<String, String> respHeaders = ImmutableMap.of("key", "getValue");
-        HttpHeaders httpResponseHeaders = new HttpHeaders(respHeaders);
+        HttpHeaders httpResponseHeaders = HttpHeadersFactory.create();
+        httpResponseHeaders.putAll(respHeaders);
         CosmosException dce = BridgeInternal.createCosmosException((String) null, (Exception) null, httpResponseHeaders, 0, (String) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
-
-        Map<String, String> responseMap = dce.getResponseHeaders().toMap();
-        assertThat(responseMap).isNotNull();
-        assertThat(responseMap).contains(respHeaders.entrySet().iterator().next());
     }
 
     @Test(groups = { "unit" }, dataProvider = "subTypes")

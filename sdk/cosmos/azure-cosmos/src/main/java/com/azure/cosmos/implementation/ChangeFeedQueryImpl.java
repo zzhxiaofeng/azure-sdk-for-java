@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -70,7 +71,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest(String continuationToken, int pageSize) {
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = HttpHeadersFactory.create();
         RxDocumentServiceRequest req = RxDocumentServiceRequest.create(
             OperationType.ReadFeed,
             resourceType,

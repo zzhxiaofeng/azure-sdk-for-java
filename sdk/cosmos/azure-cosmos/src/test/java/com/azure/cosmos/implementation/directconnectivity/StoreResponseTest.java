@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ public class StoreResponseTest {
         headerMap.put("key1", "value1");
         headerMap.put("key2", "value2");
 
-        StoreResponse sp = new StoreResponse(200, new HttpHeaders(headerMap), getUTF8BytesOrNull(content));
+        HttpHeaders httpHeaders = HttpHeadersFactory.create();
+        httpHeaders.putAll(headerMap);
+        StoreResponse sp = new StoreResponse(200, httpHeaders, getUTF8BytesOrNull(content));
 
         assertThat(sp.getStatus()).isEqualTo(200);
         assertThat(sp.getResponseBody()).isEqualTo(getUTF8BytesOrNull(content));

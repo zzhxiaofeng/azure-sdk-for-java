@@ -3,11 +3,14 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +20,7 @@ public class HttpUtilsTest {
 
     @Test(groups = { "unit" })
     public void verifyConversionOfHttpResponseHeadersToMap() {
-        HttpHeaders headersMap = new HttpHeaders();
+        HttpHeaders headersMap = HttpHeadersFactory.create();
         headersMap.put(HttpConstants.Headers.OWNER_FULL_NAME, OWNER_FULL_NAME_VALUE);
 
         HttpUtils.unescapeOwnerFullName(headersMap);
@@ -26,15 +29,15 @@ public class HttpUtilsTest {
         Mockito.when(httpResponse.headers()).thenReturn(headersMap);
         HttpHeaders httpResponseHeaders = httpResponse.headers();
 
-        assertThat(httpResponseHeaders.getSize()).isEqualTo(1);
-        HttpHeader entry = httpResponseHeaders.iterator().next();
-        assertThat(entry.getName()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
+        assertThat(httpResponseHeaders.size()).isEqualTo(1);
+        Map.Entry<String, String> entry = httpResponseHeaders.exportHeaders().entrySet().iterator().next();
+        assertThat(entry.getKey()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
 
         HttpUtils.unescapeOwnerFullName(httpResponseHeaders);
-        assertThat(httpResponseHeaders.getSize()).isEqualTo(1);
-        entry = httpResponseHeaders.iterator().next();
-        assertThat(entry.getName()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
+        assertThat(httpResponseHeaders.size()).isEqualTo(1);
+        entry = httpResponseHeaders.exportHeaders().entrySet().iterator().next();
+        assertThat(entry.getKey()).isEqualTo(HttpConstants.Headers.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
     }
 }

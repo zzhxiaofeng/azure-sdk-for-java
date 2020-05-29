@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.*;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConflictException;
@@ -42,10 +42,6 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +107,7 @@ public class HttpTransportClient extends TransportClient {
             String activityId = request.getActivityId().toString();
 
             if (resourceOperation.operationType == OperationType.Recreate) {
-                HttpHeaders errorResponseHeaders = new HttpHeaders();
+                HttpHeaders errorResponseHeaders = HttpHeadersFactory.create();
                 errorResponseHeaders.put(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE, "1");
 
                 logger.error("Received Recreate request on Http client");
@@ -417,7 +413,7 @@ public class HttpTransportClient extends TransportClient {
             HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.COLLECTION_SERVICE_INDEX, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.COLLECTION_SERVICE_INDEX));
         }
 
-        if (documentServiceRequestHeaders.get(WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE) != null) {
+        if (documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE) != null) {
             HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.BIND_REPLICA_DIRECTIVE));
             HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.PRIMARY_MASTER_KEY, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.PRIMARY_MASTER_KEY));
             HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SECONDARY_MASTER_KEY, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.SECONDARY_MASTER_KEY));
@@ -425,7 +421,7 @@ public class HttpTransportClient extends TransportClient {
             HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.SECONDARY_READONLY_KEY, documentServiceRequestHeaders.getValue(WFConstants.BackendHeaders.SECONDARY_READONLY_KEY));
         }
 
-        if (documentServiceRequestHeaders.get(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE) != null) {
+        if (documentServiceRequestHeaders.getValue(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE) != null) {
             HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE, documentServiceRequestHeaders.getValue(HttpConstants.Headers.CAN_OFFER_REPLACE_COMPLETE));
         }
 

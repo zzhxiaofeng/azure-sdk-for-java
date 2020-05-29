@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.*;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
@@ -28,9 +28,6 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -867,7 +864,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private HttpHeaders getRequestHeaders(RequestOptions options, ResourceType resourceType, OperationType operationType) {
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = HttpHeadersFactory.create();
 
         if (this.useMultipleWriteLocations) {
             headers.put(HttpConstants.Headers.ALLOW_TENTATIVE_WRITES, Boolean.TRUE.toString());
@@ -888,9 +885,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         HttpHeaders customOptions = options.getHeaders();
         if (customOptions != null) {
-            for (HttpHeader entry : customOptions) {
-                headers.put(entry.getName(), entry.getValue());
-            }
+            headers.putAll(customOptions.exportHeaders());
         }
 
         if (options.getIfMatchETag() != null) {
@@ -2993,7 +2988,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
         final FeedOptions finalFeedOptions = options;
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
-            HttpHeaders requestHeaders = new HttpHeaders();
+            HttpHeaders requestHeaders = HttpHeadersFactory.create();
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.Headers.CONTINUATION, continuationToken);
             }

@@ -4,11 +4,12 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -204,13 +205,13 @@ public class AddressResolverTest {
                 OperationType.Read,
                 ResourceType.Document,
                 "dbs/db/colls/coll/docs/doc1",
-                new HttpHeaders());
+                HttpHeadersFactory.create());
         } else {
             request = RxDocumentServiceRequest.create(
                 OperationType.Read,
                 ResourceType.Document,
                 DOCUMENT_TEST_URL,
-                new HttpHeaders());
+                HttpHeadersFactory.create());
         }
 
         request.forceNameCacheRefresh = forceNameCacheRefresh;
@@ -277,7 +278,7 @@ public class AddressResolverTest {
                 OperationType.Read,
                 ResourceType.Document,
                 DOCUMENT_TEST_URL,
-                new HttpHeaders());
+                HttpHeadersFactory.create());
         }
 
         request.forceNameCacheRefresh = forceNameCacheRefresh;

@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.DataProvider;
@@ -140,21 +141,21 @@ public class RxDocumentServiceRequestTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
                                                                            ResourceType.Document,
                                                                            documentUrlWithId,
-                                                                           new HttpHeaders(), AuthorizationTokenType.PrimaryMasterKey);
+                                                                           HttpHeadersFactory.create(), AuthorizationTokenType.PrimaryMasterKey);
 
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
 
         request = RxDocumentServiceRequest.create(operationType, "IXYFAOHEBPMBAAAAAAAAAA==", ResourceType.Document,
-                new HttpHeaders(), AuthorizationTokenType.PrimaryReadonlyMasterKey);
+                HttpHeadersFactory.create(), AuthorizationTokenType.PrimaryReadonlyMasterKey);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryReadonlyMasterKey);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
 
         Document document = getDocumentDefinition();
         request = RxDocumentServiceRequest.create(operationType, document, ResourceType.Document, documentUrlWithId,
-                new HttpHeaders(), AuthorizationTokenType.Invalid);
+                HttpHeadersFactory.create(), AuthorizationTokenType.Invalid);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.Invalid);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
@@ -162,7 +163,7 @@ public class RxDocumentServiceRequestTest {
 
         byte[] bytes = document.toJson().getBytes(StandardCharsets.UTF_8);
         request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, documentUrlWithId, bytes,
-                new HttpHeaders(), AuthorizationTokenType.SecondaryMasterKey);
+                HttpHeadersFactory.create(), AuthorizationTokenType.SecondaryMasterKey);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.SecondaryMasterKey);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
@@ -173,7 +174,7 @@ public class RxDocumentServiceRequestTest {
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithId,
-                                                  new HttpHeaders());
+                                                  HttpHeadersFactory.create());
 
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
@@ -194,7 +195,7 @@ public class RxDocumentServiceRequestTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
                                                                            ResourceType.Document,
                                                                            documentUrlWithName,
-                                                                           new HttpHeaders(), AuthorizationTokenType.PrimaryMasterKey);
+                                                                           HttpHeadersFactory.create(), AuthorizationTokenType.PrimaryMasterKey);
 
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
         assertThat(request.getResourceAddress())
@@ -207,7 +208,7 @@ public class RxDocumentServiceRequestTest {
                                                   ResourceType.Document,
                                                   documentUrlWithName,
                                                   bytes,
-                                                  new HttpHeaders(),
+                                                  HttpHeadersFactory.create(),
                                                   AuthorizationTokenType.SecondaryMasterKey);
 
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.SecondaryMasterKey);
@@ -221,7 +222,7 @@ public class RxDocumentServiceRequestTest {
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithName,
-                                                  new HttpHeaders());
+                                                  HttpHeadersFactory.create());
 
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
         assertThat(request.getResourceAddress())
@@ -241,7 +242,7 @@ public class RxDocumentServiceRequestTest {
     public void createDifferentResourceRequestWithDiffOperation(String resourceUrl, ResourceType resourceType,
             OperationType operationType) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, resourceType, resourceUrl,
-                new HttpHeaders(), AuthorizationTokenType.PrimaryMasterKey);
+                HttpHeadersFactory.create(), AuthorizationTokenType.PrimaryMasterKey);
         assertThat(resourceUrl.contains(request.getResourceAddress())).isTrue();
         assertThat(resourceUrl.contains(request.getResourceId())).isTrue();
         assertThat(request.getResourceType()).isEqualTo(resourceType);
@@ -339,7 +340,7 @@ public class RxDocumentServiceRequestTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
                                                                            ResourceType.Document,
                                                                            documentUrlWithId,
-                                                                           new HttpHeaders());
+                                                                           HttpHeadersFactory.create());
 
         assertThat(request.isValidAddress(ResourceType.Database)).isTrue();
         assertThat(request.isValidAddress(ResourceType.DocumentCollection)).isTrue();
@@ -357,13 +358,13 @@ public class RxDocumentServiceRequestTest {
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithName,
-                                                  new HttpHeaders());
+                                                  HttpHeadersFactory.create());
 
         assertThat(request.isValidAddress(ResourceType.Document)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
         String collectionFullName = "/dbs/testDB/colls/testColl/";
         request = RxDocumentServiceRequest.create(operationType, ResourceType.DocumentCollection, collectionFullName,
-                new HttpHeaders());
+                HttpHeadersFactory.create());
 
         assertThat(request.isValidAddress(ResourceType.DocumentCollection)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
@@ -372,7 +373,7 @@ public class RxDocumentServiceRequestTest {
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Database,
                                                   databaseFullName,
-                                                  new HttpHeaders());
+                                                  HttpHeadersFactory.create());
 
         assertThat(request.isValidAddress(ResourceType.Database)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
@@ -381,7 +382,7 @@ public class RxDocumentServiceRequestTest {
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Permission,
                                                   permissionFullName,
-                                                  new HttpHeaders());
+                                                  HttpHeadersFactory.create());
 
         assertThat(request.isValidAddress(ResourceType.Permission)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
@@ -390,7 +391,7 @@ public class RxDocumentServiceRequestTest {
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Trigger,
                                                   triggerFullName,
-                                                  new HttpHeaders());
+                                                  HttpHeadersFactory.create());
 
         assertThat(request.isValidAddress(ResourceType.Trigger)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
@@ -399,7 +400,7 @@ public class RxDocumentServiceRequestTest {
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Attachment,
                                                   attachmentFullName,
-                                                  new HttpHeaders());
+                                                  HttpHeadersFactory.create());
 
         assertThat(request.isValidAddress(ResourceType.Attachment)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();

@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
@@ -25,6 +25,7 @@ import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.charset.Charset;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -134,8 +135,8 @@ class ReactorNettyClient implements HttpClient {
      */
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
-            for (HttpHeader header : restRequest.headers()) {
-                reactorNettyRequest.header(header.getName(), header.getValue());
+            for (Map.Entry<String, String> header : restRequest.headers().exportHeaders().entrySet()) {
+                reactorNettyRequest.header(header.getKey(), header.getValue());
             }
             if (restRequest.body() != null) {
                 return reactorNettyOutbound.send(restRequest.body());
@@ -184,7 +185,7 @@ class ReactorNettyClient implements HttpClient {
 
         @Override
         public HttpHeaders headers() {
-            HttpHeaders headers = new HttpHeaders();
+            HttpHeaders headers = HttpHeadersFactory.create();
             reactorNettyResponse.responseHeaders().forEach(e -> headers.put(e.getKey(), e.getValue()));
             return headers;
         }

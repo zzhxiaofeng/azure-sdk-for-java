@@ -3,7 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.*;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -27,9 +27,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import io.netty.handler.codec.http.HttpMethod;
@@ -91,7 +88,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         DocumentCollection collection = new DocumentCollection();
         collection.setId(NON_PARTITIONED_CONTAINER_ID);
 
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = HttpHeadersFactory.create();
         headers.put(HttpConstants.Headers.X_DATE, Utils.nowAsRFC1123());
         headers.put(HttpConstants.Headers.VERSION, "2018-09-17");
         BaseAuthorizationTokenProvider base = new BaseAuthorizationTokenProvider(new AzureKeyCredential(TestConfigurations.MASTER_KEY));
@@ -105,7 +102,9 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
             0] + "//" + Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.getId() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/";
         URI uri = new URI(resourceUri);
 
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
+        HttpHeaders httpHeaders = HttpHeadersFactory.create();
+        httpHeaders.putAll(headers.exportHeaders());
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), httpHeaders);
         httpRequest.withBody(request.getContentAsByteBufFlux());
         String body = httpClient.send(httpRequest).block().bodyAsString().block();
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
@@ -126,7 +125,9 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 + createdDatabase.getId() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + collection.getId() + "/" + Paths.DOCUMENTS_PATH_SEGMENT + "/";
         uri = new URI(resourceUri);
 
-        httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
+        HttpHeaders httpHeaders1 = HttpHeadersFactory.create();
+        httpHeaders1.putAll(headers.exportHeaders());
+        httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), httpHeaders1);
         httpRequest.withBody(request.getContentAsByteBufFlux());
 
         body = httpClient.send(httpRequest).block().bodyAsString().block();

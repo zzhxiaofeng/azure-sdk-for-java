@@ -143,7 +143,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         // Basic validation
         assertThat(BridgeInternal.getProperties(createResponse)).isNull();
         assertThat(createResponse.getStatusCode()).isNotNull();
-        assertThat(createResponse.getResponseHeaders()).isNotEmpty();
+        assertThat(createResponse.getResponseHeaders().exportHeaders()).isNotEmpty();
         assertThat(createResponse.getRequestCharge()).isGreaterThan(0);
         if (withETag) {
             assertThat(createResponse.getETag()).isNotEmpty();

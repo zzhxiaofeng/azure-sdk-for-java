@@ -3,9 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 
 import java.net.URI;
 
@@ -52,7 +53,7 @@ public class GoneException extends CosmosException {
      * @param requestUri the request uri
      */
     public GoneException(String message, String requestUri) {
-        this(message, null, new HttpHeaders (), requestUri);
+        this(message, null, HttpHeadersFactory.create(), requestUri);
     }
 
     GoneException(String message,
@@ -63,7 +64,7 @@ public class GoneException extends CosmosException {
     }
 
     GoneException(Exception innerException) {
-        this(RMResources.Gone, innerException, new HttpHeaders(), (String) null);
+        this(RMResources.Gone, innerException, HttpHeadersFactory.create(), (String) null);
     }
 
     /**

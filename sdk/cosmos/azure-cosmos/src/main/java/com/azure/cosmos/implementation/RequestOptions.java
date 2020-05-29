@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -309,7 +310,7 @@ public class RequestOptions {
      */
     public void setHeader(String name, String value) {
         if (this.customOptions == null) {
-            this.customOptions = new HttpHeaders();
+            this.customOptions = HttpHeadersFactory.create();
         }
         this.customOptions.put(name, value);
     }

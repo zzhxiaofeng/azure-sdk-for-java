@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
@@ -125,7 +126,7 @@ implements IDocumentQueryExecutionContext<T> {
     }
 
     public HttpHeaders createCommonHeadersAsync(FeedOptions feedOptions) {
-        HttpHeaders requestHeaders = new HttpHeaders();
+        HttpHeaders requestHeaders = HttpHeadersFactory.create();
 
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
         ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
@@ -203,7 +204,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (this.resourceTypeEnum.isPartitioned()) {
-            boolean hasPartitionKey = request.getHeaders().get(HttpConstants.Headers.PARTITION_KEY) != null;
+            boolean hasPartitionKey = request.getHeaders().getValue(HttpConstants.Headers.PARTITION_KEY) != null;
             if(!hasPartitionKey){
                 request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
             }

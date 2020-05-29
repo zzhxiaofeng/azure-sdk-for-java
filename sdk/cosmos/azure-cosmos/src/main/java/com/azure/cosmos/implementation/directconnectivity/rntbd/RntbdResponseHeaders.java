@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -192,7 +193,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     public HttpHeaders asCoreHttpHeaders(final RntbdContext context, final UUID activityId) {
 
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = HttpHeadersFactory.create();
         httpHeaders.put(Headers.SERVER_VERSION, context.serverVersion());
         httpHeaders.put(Headers.ACTIVITY_ID, activityId.toString());
 

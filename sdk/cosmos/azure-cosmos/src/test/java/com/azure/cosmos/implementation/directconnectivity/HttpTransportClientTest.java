@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.*;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -31,9 +31,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.channel.ConnectTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
@@ -124,7 +121,7 @@ public class HttpTransportClientTest {
     public void validateDefaultHeaders() {
         HttpResponse mockedResponse = new HttpClientMockWrapper.HttpClientBehaviourBuilder()
                 .withContent("").withStatus(200)
-                .withHeaders(new HttpHeaders())
+                .withHeaders(HttpHeadersFactory.create())
                 .asHttpResponse();
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponse);
 
@@ -593,7 +590,7 @@ public class HttpTransportClientTest {
                 operationType,
                 resourceType,
                 resourceFullName,
-                new HttpHeaders());
+                HttpHeadersFactory.create());
 
         req.setContentBytes(content);
         return req;

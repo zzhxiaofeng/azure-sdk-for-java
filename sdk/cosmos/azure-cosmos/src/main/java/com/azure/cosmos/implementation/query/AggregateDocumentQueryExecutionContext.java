@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.query.aggregation.Aggregator;
 import com.azure.cosmos.implementation.query.aggregation.AverageAggregator;
@@ -73,7 +74,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
                     double requestCharge = 0;
                     List<Document> aggregateResults = new ArrayList<Document>();
-                    HttpHeaders headers = new HttpHeaders();
+                    HttpHeaders headers = HttpHeadersFactory.create();
 
                     for(FeedResponse<T> page : superList) {
 

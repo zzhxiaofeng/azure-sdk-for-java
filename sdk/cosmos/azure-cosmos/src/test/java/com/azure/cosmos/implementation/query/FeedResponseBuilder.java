@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -20,7 +21,7 @@ public class FeedResponseBuilder<T extends Resource> {
     private final boolean isChangeFeed;
     private final Class<T> klass;
 
-    private HttpHeaders headers = new HttpHeaders();
+    private HttpHeaders headers = HttpHeadersFactory.create();
     private boolean noMoreChangesInChangeFeed = false;
     private List<T> results;
 

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.implementation.Conflict;

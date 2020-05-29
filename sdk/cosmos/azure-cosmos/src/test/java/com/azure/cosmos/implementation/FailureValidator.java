@@ -78,7 +78,7 @@ public interface FailureValidator {
                     assertThat(t).isInstanceOf(CosmosException.class);
                     CosmosException cosmosException = (CosmosException) t;
                     long exceptionQuorumAckedLSN = -1;
-                    if (cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN) != null) {
+                    if (cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.QUORUM_ACKED_LSN) != null) {
                         exceptionQuorumAckedLSN = Long.parseLong(cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
 
                     }
@@ -154,7 +154,7 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosException.class);
-                    assertThat(((CosmosException) t).getResponseHeaders().get(key)).isEqualTo(value);
+                    assertThat(((CosmosException) t).getResponseHeaders().getValue(key)).isEqualTo(value);
                 }
             });
             return this;

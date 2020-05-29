@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -150,7 +151,8 @@ public class ConsistencyWriterTest {
         ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<>();
         builder.put(WFConstants.BackendHeaders.LSN, "3");
         builder.put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2");
-        HttpHeaders headers = new HttpHeaders(builder.build());
+        HttpHeaders headers = HttpHeadersFactory.create();
+        headers.putAll(builder.build());
 
         StoreResponse sr = new StoreResponse(0, headers, null);
         Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-2l);

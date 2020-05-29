@@ -3,11 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.*;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import org.mockito.Mockito;
@@ -27,7 +24,7 @@ public class HttpClientMockWrapper {
     public static class HttpClientBehaviourBuilder {
         private int status;
         private String content;
-        private HttpHeaders httpHeaders = new HttpHeaders();
+        private HttpHeaders httpHeaders = HttpHeadersFactory.create();
         private Exception networkFailure;
 
         public HttpClientBehaviourBuilder withNetworkFailure(Exception networkFailure) {

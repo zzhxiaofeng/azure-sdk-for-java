@@ -4,9 +4,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 
 import java.math.BigDecimal;
 import java.util.AbstractMap;
@@ -26,7 +27,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder() {
-        headerEntries = new HttpHeaders();
+        headerEntries = HttpHeadersFactory.create();
     }
 
     public StoreResponseBuilder withHeader(String key, String value) {

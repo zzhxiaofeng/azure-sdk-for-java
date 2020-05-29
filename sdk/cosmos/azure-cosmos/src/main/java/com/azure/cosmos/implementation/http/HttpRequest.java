@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -48,7 +48,7 @@ public class HttpRequest {
         this.httpMethod = httpMethod;
         this.uri = new URI(uri);
         this.port = port;
-        this.headers = new HttpHeaders();
+        this.headers = HttpHeadersFactory.create();
         this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
     }
 

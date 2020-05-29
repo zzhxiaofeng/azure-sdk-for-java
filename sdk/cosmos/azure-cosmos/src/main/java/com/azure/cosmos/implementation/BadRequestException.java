@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 
 import java.net.URI;
 
@@ -22,7 +23,7 @@ public class BadRequestException extends CosmosException {
      * @param innerException the inner exception
      */
     public BadRequestException(String message, Exception innerException) {
-        super(message, innerException, new HttpHeaders(), HttpConstants.StatusCodes.BADREQUEST, null);
+        super(message, innerException, HttpHeadersFactory.create(), HttpConstants.StatusCodes.BADREQUEST, null);
     }
 
     /**
