@@ -45,7 +45,7 @@ public enum RntbdTokenType {
     private static final RntbdTokenType[] allTokens = getAllTokens();
 
     private static  RntbdTokenType[] getAllTokens() {
-        final int maxByteValue = (int)0xFF + 1;
+        final int maxByteValue = 0xFF + 1;
         final RntbdTokenType[] allPossibleTokens = new RntbdTokenType[maxByteValue]; // one byte RNTBD limit
         for(int i=0; i< maxByteValue; i++) {
             allPossibleTokens[i] = Invalid;
