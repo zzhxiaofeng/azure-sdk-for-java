@@ -193,7 +193,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     public HttpHeaders asCoreHttpHeaders(final RntbdContext context, final UUID activityId) {
 
-        HttpHeaders httpHeaders = HttpHeadersFactory.create(this.getValidCount() + 2);
+        HttpHeaders httpHeaders = HttpHeadersFactory.create();
         httpHeaders.put(Headers.SERVER_VERSION, context.serverVersion());
         httpHeaders.put(Headers.ACTIVITY_ID, activityId.toString());
 

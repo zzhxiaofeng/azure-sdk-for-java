@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import java.util.HashMap;
 import java.util.Locale;
@@ -18,8 +17,8 @@ public class HashMapHttpHeaders implements HttpHeaders {
     /**
      * Create an empty HttpHeaders instance.
      */
-    private HashMapHttpHeaders() {
-        throw new NotImplementedException("Unsupported usage");
+    public HashMapHttpHeaders() {
+        this.headers = new HashMap<>();
     }
 
     /**
