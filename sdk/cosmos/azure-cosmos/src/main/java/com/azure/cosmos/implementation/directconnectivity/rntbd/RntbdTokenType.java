@@ -14,7 +14,7 @@ import java.util.UUID;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
-enum RntbdTokenType {
+public enum RntbdTokenType {
 
     // All values are encoded as little endian byte sequences except for Guid
     // Guid values are serialized in Microsoft GUID byte order
@@ -45,7 +45,7 @@ enum RntbdTokenType {
     private static final RntbdTokenType[] allTokens = getAllTokens();
 
     private static  RntbdTokenType[] getAllTokens() {
-        final int maxByteValue = 0xFF + 1;
+        final int maxByteValue = (int)0xFF + 1;
         final RntbdTokenType[] allPossibleTokens = new RntbdTokenType[maxByteValue]; // one byte RNTBD limit
         for(int i=0; i< maxByteValue; i++) {
             allPossibleTokens[i] = Invalid;
@@ -53,7 +53,9 @@ enum RntbdTokenType {
 
         // Override with valid entries
         for (final RntbdTokenType tokenType : RntbdTokenType.values()) {
-            allPossibleTokens[tokenType.id] = tokenType;
+            if (tokenType.id != Invalid.id) { // byte (0xFF auto-translates to -1)
+                allPossibleTokens[tokenType.id] = tokenType;
+            }
         }
 
         return allPossibleTokens;
@@ -72,6 +74,10 @@ enum RntbdTokenType {
     }
 
     public static RntbdTokenType fromId(final byte value) {
+        if (value == Invalid.id) {
+            return Invalid;
+        }
+
         return allTokens[value];
     }
 
