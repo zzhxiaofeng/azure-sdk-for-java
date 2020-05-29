@@ -12,11 +12,35 @@ import java.util.Map;
  * A collection of headers on an HTTP request or response.
  */
 public class HttpHeadersFactory {
+    private static final String defaultHeaderCountName = "com.azure.cosmos.http.default.headerssize";
+    private static final int systemDefaultHeadersCount = 32; // Only re-allocations on 23rd header insert
+
+    // Not marked volatile and will eventually catch-up
+    // read-optimized and paying memory barrier cost
+    private static int defaultHeadersCount = 0;
+
     public static HttpHeaders create() {
-        return new HashMapHttpHeaders();
+        return create(getDefaultHeadersCount());
     }
 
     public static HttpHeaders create(int initialCapacity) {
         return new HashMapHttpHeaders(initialCapacity);
     }
-}
+
+    private static int getDefaultHeadersCount() {
+        if (defaultHeadersCount == 0) {
+            String value = System.getProperty(defaultHeaderCountName);
+            if (StringUtils.isNotEmpty(value)) {
+                try {
+                    defaultHeadersCount = Integer.parseInt(value);
+                } catch (NumberFormatException ex) {
+                }
+            }
+
+            if (defaultHeadersCount == 0) {
+                defaultHeadersCount = systemDefaultHeadersCount;
+            }
+        }
+
+        return defaultHeadersCount;
+    }}
