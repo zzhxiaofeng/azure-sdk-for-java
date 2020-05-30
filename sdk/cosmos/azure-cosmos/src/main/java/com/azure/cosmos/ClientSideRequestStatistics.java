@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -143,7 +142,7 @@ class ClientSideRequestStatistics {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
                 this.gatewayStatistics.sessionToken = storeResponse.getHeaders().SessionToken;
-                this.gatewayStatistics.requestCharge = storeResponse.getHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
+                this.gatewayStatistics.requestCharge = storeResponse.getHeaders().RequestCharge;
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();

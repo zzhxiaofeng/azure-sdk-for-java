@@ -79,7 +79,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     for(FeedResponse<T> page : superList) {
 
                         if (page.getResults().size() == 0) {
-                            headers.put(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(requestCharge));
+                            headers.RequestCharge = Double.toString(requestCharge);
                             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                             return (FeedResponse<T>) frp;
                         }
@@ -104,7 +104,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                         aggregateResults.add(aggregateDocument);
                     }
 
-                    headers.put(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(requestCharge));
+                    headers.RequestCharge = Double.toString(requestCharge);
                     FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                     if(!queryMetricsMap.isEmpty()) {
                         for(Map.Entry<String, QueryMetrics> entry: queryMetricsMap.entrySet()) {

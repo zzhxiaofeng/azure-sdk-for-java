@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpHeadersFactory;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.HttpConstants.Headers;
@@ -294,7 +296,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         addStringHeaderIfPresent(this.databaseAccountId, BackendHeaders.DATABASE_ACCOUNT_ID, responseHeaders);
         addBooleanHeaderIfPresent(this.disableRntbdChannel, Headers.DISABLE_RNTBD_CHANNEL, responseHeaders);
 
-        addStringHeaderIfPresent(this.eTag, Headers.E_TAG, responseHeaders);
+        addStringHeaderIfPresent(this.eTag, v -> responseHeaders.Etag = v);
 
         addLongHeaderIfPresent(this.globalCommittedLSN, BackendHeaders.GLOBAL_COMMITTED_LSN, responseHeaders);
 
@@ -328,7 +330,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         addLongHeaderIfPresent(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, responseHeaders);
         addLongHeaderIfPresent(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, responseHeaders);
 
-        addCurrencyEntryTokenHeaderIfPresent(this.requestCharge, Headers.REQUEST_CHARGE, responseHeaders);
+        addCurrencyEntryTokenHeaderIfPresent(this.requestCharge, v -> responseHeaders.RequestCharge = v);
 
         addByteHeaderIfPresent(this.requestValidationFailure, BackendHeaders.REQUEST_VALIDATION_FAILURE, responseHeaders);
 
@@ -358,8 +360,12 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     }
 
     private void addStringHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        addStringHeaderIfPresent(token, v -> responseHeaders.put(headerName, v));
+    }
+
+    private void addStringHeaderIfPresent(final RntbdToken token, final Consumer<String> action) {
         if (token.isPresent()) {
-            responseHeaders.put(headerName, token.getValue(String.class));
+            action.accept(token.getValue(String.class));
         }
     }
 
@@ -382,9 +388,13 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     }
 
     private void addCurrencyEntryTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
+        addCurrencyEntryTokenHeaderIfPresent(token, v -> responseHeaders.put(headerName, v));
+    }
+
+    private void addCurrencyEntryTokenHeaderIfPresent(final RntbdToken token, final Consumer<String> action) {
         if (token.isPresent()) {
             final BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
-            responseHeaders.put(headerName, value.toString());
+            action.accept(value.toString());
         }
     }
 

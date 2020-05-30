@@ -687,7 +687,7 @@ public class StoreReader {
             }
 
             double requestCharge = 0;
-            if ((headerValue = responseHeaders.getValue(HttpConstants.Headers.REQUEST_CHARGE)) != null) {
+            if ((headerValue = responseHeaders.RequestCharge) != null) {
                 requestCharge = Double.parseDouble(headerValue);
             }
 
@@ -761,7 +761,7 @@ public class StoreReader {
                 }
 
                 double requestCharge = 0;
-                headerValue = cosmosException.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
+                headerValue = cosmosException.getResponseHeaders().RequestCharge;
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     requestCharge = Double.parseDouble(headerValue);
                 }

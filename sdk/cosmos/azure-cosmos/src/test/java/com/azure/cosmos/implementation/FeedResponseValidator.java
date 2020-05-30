@@ -110,7 +110,7 @@ public interface FeedResponseValidator<T> {
             validators.add(new FeedResponseValidator<T>() {
                 @Override
                 public void validate(FeedResponse<T> feedPage) {
-                    assertThat(feedPage.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE)).isNotNull();
+                    assertThat(feedPage.getResponseHeaders().RequestCharge).isNotNull();
                 }
             });
             return this;

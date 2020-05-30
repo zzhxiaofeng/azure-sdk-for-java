@@ -46,7 +46,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withRequestCharge(double requestCharge) {
-        headerEntries.put(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(requestCharge));
+        headerEntries.RequestCharge = Double.toString(requestCharge);
         return this;
     }
 

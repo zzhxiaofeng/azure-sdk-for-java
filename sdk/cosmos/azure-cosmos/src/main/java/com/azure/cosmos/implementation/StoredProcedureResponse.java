@@ -77,7 +77,7 @@ public final class StoredProcedureResponse {
      * @return the request charge.
      */
     public double getRequestCharge() {
-        String value = this.response.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
+        String value = this.response.getResponseHeaders().RequestCharge;
         try {
             return Double.valueOf(value);
         } catch (NumberFormatException e) {

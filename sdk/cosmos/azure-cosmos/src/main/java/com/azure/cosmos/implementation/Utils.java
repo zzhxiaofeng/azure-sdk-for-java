@@ -80,8 +80,7 @@ public class Utils {
 
     public static HttpHeaders newHeadersWithRequestCharge(double requestCharge) {
         HttpHeaders httpHeaders = HttpHeadersFactory.create();
-        httpHeaders.put(HttpConstants.Headers.REQUEST_CHARGE,
-            String.valueOf(requestCharge));
+        httpHeaders.RequestCharge = String.valueOf(requestCharge);
 
         return  httpHeaders;
     }

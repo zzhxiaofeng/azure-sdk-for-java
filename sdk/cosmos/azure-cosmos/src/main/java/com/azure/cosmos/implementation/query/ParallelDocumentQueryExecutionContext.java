@@ -226,8 +226,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
             double pageCharge = page.getRequestCharge();
             pageCharge += charge;
-            headers.put(HttpConstants.Headers.REQUEST_CHARGE,
-                    String.valueOf(pageCharge));
+            headers.RequestCharge = String.valueOf(pageCharge);
 
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                     headers,

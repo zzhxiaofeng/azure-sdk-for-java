@@ -116,15 +116,15 @@ public class StoreResult {
 
     private static void setRequestCharge(StoreResponse response, CosmosException cosmosException, double totalRequestCharge) {
         if (cosmosException != null) {
-            cosmosException.getResponseHeaders().put(HttpConstants.Headers.REQUEST_CHARGE,
-                    Double.toString(totalRequestCharge));
+            cosmosException.getResponseHeaders().RequestCharge =
+                    Double.toString(totalRequestCharge);
         }
         // Set total charge as final charge for the response.
         else {
             HttpHeaders responseHeaders = response.getHeaders();
 
             if (responseHeaders != null) {
-                responseHeaders.put(HttpConstants.Headers.REQUEST_CHARGE, Double.toString(totalRequestCharge));
+                responseHeaders.RequestCharge = Double.toString(totalRequestCharge);
             }
         }
     }

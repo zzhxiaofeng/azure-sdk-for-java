@@ -280,7 +280,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the request charge.
      */
     public double getRequestCharge() {
-        String value = this.getResponseHeaders().getValue(HttpConstants.Headers.REQUEST_CHARGE);
+        String value = this.getResponseHeaders().RequestCharge;
         if (StringUtils.isEmpty(value)) {
             return 0;
         }

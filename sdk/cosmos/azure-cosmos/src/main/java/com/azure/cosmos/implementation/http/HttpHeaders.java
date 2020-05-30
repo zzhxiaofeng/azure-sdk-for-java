@@ -16,20 +16,29 @@ import java.util.Map;
 public abstract class HttpHeaders
 {
     private static final boolean enableValidation = HttpHeadersFactory.getBooleanConfig(HttpHeadersFactory.includePromotedHeaderValidation);
-    private static final ImmutableMap<String, String> BYPASS_LIST =
-        ImmutableMap.of(
-            "x-ms-serviceversion", "A",
-            "x-ms-session-token", "A",
-            "x-ms-documentdb-partitionkey", "A",
-            "x-ms-consistency-level", "A",
-            "x-ms-activity-id", "A"
-        );
+    private static final ImmutableMap<String, String> BYPASS_LIST = getPromotedHeadersMap();
+
+    private static ImmutableMap<String, String> getPromotedHeadersMap() {
+        ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<>();
+        builder.put("x-ms-serviceversion", "A");
+        builder.put("x-ms-session-token", "A");
+        builder.put("x-ms-documentdb-partitionkey", "A");
+        builder.put("x-ms-consistency-level", "A");
+        builder.put("x-ms-activity-id", "A");
+        builder.put("etag", "A");
+        builder.put("x-ms-request-charge", "A");
+
+        return builder.build();
+    }
 
     public String ActivityId = null;
     public String SessionToken = null;
     public String ConsistencyLevel = null;
     public String ServiceVersion = null;
     public String PartitionKey = null;
+
+    public String Etag = null;
+    public String RequestCharge = null;
 
     /**
      * Create a HttpHeaders instance with the provided initial headers.
@@ -159,6 +168,15 @@ public abstract class HttpHeaders
         if (PartitionKey != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.PARTITION_KEY))) {
             headerCopy.put(HttpConstants.Headers.PARTITION_KEY, ServiceVersion);
         }
+
+        if (Etag != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.E_TAG))) {
+            headerCopy.put(HttpConstants.Headers.E_TAG, Etag);
+        }
+
+        if (RequestCharge != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.REQUEST_CHARGE))) {
+            headerCopy.put(HttpConstants.Headers.REQUEST_CHARGE, RequestCharge);
+        }
+
         return headerCopy;
     }
 
@@ -188,6 +206,16 @@ public abstract class HttpHeaders
                 case HttpConstants.Headers.PARTITION_KEY:
                     if (PartitionKey == null) {
                         PartitionKey = header.getValue();
+                    }
+                    break;
+                case HttpConstants.Headers.E_TAG:
+                    if (Etag == null) {
+                        Etag = header.getValue();
+                    }
+                    break;
+                case HttpConstants.Headers.REQUEST_CHARGE:
+                    if (RequestCharge == null) {
+                        RequestCharge = header.getValue();
                     }
                     break;
                 default:
