@@ -390,7 +390,7 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.IS_READ_ONLY_SCRIPT, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONTENT_SERIALIZATION_FORMAT, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONTINUATION, request.getContinuation());
-        httpRequestHeaders.setActivityId(activityId);
+        httpRequestHeaders.ActivityId = activityId;
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PARTITION_KEY, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PARTITION_KEY_RANGE_ID, request);
 
@@ -671,7 +671,7 @@ public class HttpTransportClient extends TransportClient {
                                     RMResources.InvalidBackendResponse),
                             null,
                             physicalAddress);
-            exception.getResponseHeaders().setActivityId(activityId);
+            exception.getResponseHeaders().ActivityId = activityId;
             exception.getResponseHeaders().put(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE, "1");
 
             return Mono.error(exception);
@@ -757,7 +757,7 @@ public class HttpTransportClient extends TransportClient {
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         request.uri().toString());
-                                exception.getResponseHeaders().setActivityId(activityId);
+                                exception.getResponseHeaders().ActivityId = activityId;
 
                                 break;
                             } else {
@@ -850,7 +850,7 @@ public class HttpTransportClient extends TransportClient {
                                         response.headers(),
                                         request.uri());
 
-                                exception.getResponseHeaders().setActivityId(activityId);
+                                exception.getResponseHeaders().ActivityId = activityId;
                                 break;
                             }
                         }

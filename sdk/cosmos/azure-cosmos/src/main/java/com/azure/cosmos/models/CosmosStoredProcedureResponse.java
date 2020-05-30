@@ -48,6 +48,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
         if (storedProcedureResponse != null) {
             return this.storedProcedureResponse.getActivityId();
         }
+
         return super.getActivityId();
     }
 

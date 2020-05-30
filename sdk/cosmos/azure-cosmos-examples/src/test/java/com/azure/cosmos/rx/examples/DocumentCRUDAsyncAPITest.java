@@ -132,7 +132,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
         // Subscribe to Document resource response emitted by the observable
         createDocumentObservable.single() // We know there will be one response
                 .subscribe(documentResourceResponse -> {
-                    System.out.println(documentResourceResponse.getActivityId());
+                    System.out.println(documentResourceResponse.ActivityId);
                     completionLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -159,7 +159,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
             @Override
             public void accept(ResourceResponse<Document> documentResourceResponse) {
-                System.out.println(documentResourceResponse.getActivityId());
+                System.out.println(documentResourceResponse.ActivityId);
                 completionLatch.countDown();
             }
         };
@@ -224,7 +224,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
             // The read document must be the same as the written document
             assertThat(readDocument.getId(), equalTo("test-document"));
             assertThat(readDocument.getInt("counter"), equalTo(1));
-            System.out.println(documentResourceResponse.getActivityId());
+            System.out.println(documentResourceResponse.ActivityId);
             completionLatch.countDown();
         }, error -> {
             System.err.println("an error occured while creating the document: actual cause: " + error.getMessage());

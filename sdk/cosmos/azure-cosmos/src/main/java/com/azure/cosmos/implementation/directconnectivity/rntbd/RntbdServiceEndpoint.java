@@ -266,7 +266,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final String reason = cause.getMessage();
 
             HttpHeaders httpHeaders = HttpHeadersFactory.create();
-            httpHeaders.setActivityId(activityId.toString());
+            httpHeaders.ActivityId = activityId.toString();
 
             final GoneException goneException = new GoneException(
                 Strings.lenientFormat("failed to establish connection to %s: %s", this.remoteAddress, reason),

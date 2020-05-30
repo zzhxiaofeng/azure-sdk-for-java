@@ -52,7 +52,7 @@ public class HttpHeadersFactory {
         nettyHeaders.forEach(e ->
             {
                 if (HttpConstants.Headers.ACTIVITY_ID.equalsIgnoreCase(e.getKey())) {
-                    newHeaders.setActivityId(e.getValue());
+                    newHeaders.ActivityId = e.getValue();
                 } else {
                     newHeaders.put(e.getKey(), e.getValue());
                 }

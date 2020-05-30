@@ -102,7 +102,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
 
         createDatabaseObservable.single() // We know there is only single result
                 .subscribe(databaseResourceResponse -> {
-                    System.out.println(databaseResourceResponse.getActivityId());
+                    System.out.println(databaseResourceResponse.ActivityId);
                     completionLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -128,7 +128,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
             @Override
             public void accept(ResourceResponse<Database> resourceResponse) {
                 // Database is created
-                System.out.println(resourceResponse.getActivityId());
+                System.out.println(resourceResponse.ActivityId);
                 completionLatch.countDown();
             }
         };
@@ -219,7 +219,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
 
         readDatabaseObservable.single() // We know there is only single result
                 .subscribe(databaseResourceResponse -> {
-                    System.out.println(databaseResourceResponse.getActivityId());
+                    System.out.println(databaseResourceResponse.ActivityId);
                     completionLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -247,7 +247,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
 
         deleteDatabaseObservable.single() // We know there is only single result
                 .subscribe(databaseResourceResponse -> {
-                    System.out.println(databaseResourceResponse.getActivityId());
+                    System.out.println(databaseResourceResponse.ActivityId);
                     completionLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -286,7 +286,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
             Database foundDatabase = databaseFeedResponse.getResults().get(0);
             assertThat(foundDatabase.getId(), equalTo(databaseDefinition.getId()));
 
-            System.out.println(databaseFeedResponse.getActivityId());
+            System.out.println(databaseFeedResponse.ActivityId);
             completionLatch.countDown();
         }, error -> {
             System.err.println("an error occurred while querying the database: actual cause: " + error.getMessage());

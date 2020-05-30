@@ -19,15 +19,7 @@ public abstract class HttpHeaders
         "x-ms-activity-id", "A"
     );
 
-    private String ActivityId = null;
-
-    public void setActivityId(String value) {
-        ActivityId = value;
-    }
-
-    public String getActivityId() {
-        return ActivityId;
-    }
+    public String ActivityId = null;
 
     /**
      * Create a HttpHeaders instance with the provided initial headers.

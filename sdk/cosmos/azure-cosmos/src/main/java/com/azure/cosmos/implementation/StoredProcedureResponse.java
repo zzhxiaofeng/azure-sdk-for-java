@@ -31,7 +31,7 @@ public final class StoredProcedureResponse {
      * @return the activity id.
      */
     public String getActivityId() {
-        return this.response.getResponseHeaders().getActivityId();
+        return this.response.getResponseHeaders().ActivityId;
     }
 
     /**
