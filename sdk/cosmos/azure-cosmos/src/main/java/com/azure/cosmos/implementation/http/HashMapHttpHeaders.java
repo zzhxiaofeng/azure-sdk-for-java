@@ -43,7 +43,7 @@ public class HashMapHttpHeaders extends HttpHeaders {
         return headers.get(normalizeName(name));
     }
 
-    public Map<String, String> exportHeaders() {
+    public Map<String, String> exportHeadersInternal() {
         return headers;
     }
 

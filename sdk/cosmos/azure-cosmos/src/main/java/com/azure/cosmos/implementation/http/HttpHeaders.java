@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,12 +19,14 @@ public abstract class HttpHeaders
         "x-ms-activity-id", "A"
     );
 
+    private String ActivityId = null;
+
     public void setActivityId(String value) {
-        putInternal(HttpConstants.Headers.ACTIVITY_ID, value);
+        ActivityId = value;
     }
 
     public String getActivityId() {
-        return getValueInternal(HttpConstants.Headers.ACTIVITY_ID);
+        return ActivityId;
     }
 
     /**
@@ -121,6 +124,31 @@ public abstract class HttpHeaders
      *
      * @return the headers as map
      */
-    public abstract Map<String, String> exportHeaders();
+    public Map<String, String> exportHeaders() {
+        return exportHeaders(null);
+    }
+
+    public Map<String, String> exportHeaders(HeaderNameFilerFunc nameFilerFunc) {
+        // TODO: Revisit hardcoded value - 5
+        Map<String, String> headerCopy = new HashMap<>(exportHeadersInternal().size() + 5);
+
+        for(final Map.Entry<String, String> header : exportHeadersInternal().entrySet()) {
+            if(nameFilerFunc == null || !nameFilerFunc.doExclude(header.getKey())) {
+                headerCopy.put(header.getKey(), header.getValue());
+            }
+        }
+
+        if (ActivityId != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.ACTIVITY_ID))) {
+            headerCopy.put(HttpConstants.Headers.ACTIVITY_ID, ActivityId);
+        }
+
+        return headerCopy;
+    }
+
+    protected abstract Map<String, String> exportHeadersInternal();
+
+    public interface HeaderNameFilerFunc {
+        boolean doExclude(String headerName);
+    }
 }
 

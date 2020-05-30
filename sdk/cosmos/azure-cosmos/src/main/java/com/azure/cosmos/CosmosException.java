@@ -288,19 +288,12 @@ public class CosmosException extends AzureException {
         return null;
     }
 
-    private HttpHeaders filterSensitiveData(HttpHeaders requestHeaders) {
+    private Map<String, String> filterSensitiveData(HttpHeaders requestHeaders) {
         if (requestHeaders == null) {
             return null;
         }
 
-        HttpHeaders filteredHeaders = HttpHeadersFactory.create();
-        for(final Map.Entry<String, String> header : requestHeaders.exportHeaders().entrySet()) {
-            if(! header.getKey().equalsIgnoreCase(HttpConstants.Headers.AUTHORIZATION)) {
-                filteredHeaders.put(header.getKey(), header.getValue());
-            }
-        }
-
-        return filteredHeaders;
+        return requestHeaders.exportHeaders(name -> name.equalsIgnoreCase(HttpConstants.Headers.AUTHORIZATION));
     }
 
     void setResourceAddress(String resourceAddress) {
