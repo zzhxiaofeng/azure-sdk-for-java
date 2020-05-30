@@ -5,10 +5,12 @@ package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Some doc TBD
@@ -139,41 +141,41 @@ public abstract class HttpHeaders
         return exportHeaders(null);
     }
 
-    public Map<String, String> exportHeaders(HeaderNameFilerFunc nameFilerFunc) {
+    public Map<String, String> exportHeaders(Function<String, Boolean> nameFilerFunc) {
         // TODO: Revisit hardcoded value - 5
         Map<String, String> headerCopy = new HashMap<>(exportHeadersInternal().size() + 5);
 
         for(final Map.Entry<String, String> header : exportHeadersInternal().entrySet()) {
-            if(nameFilerFunc == null || !nameFilerFunc.doExclude(header.getKey())) {
+            if(nameFilerFunc == null || !nameFilerFunc.apply(header.getKey())) {
                 headerCopy.put(header.getKey(), header.getValue());
             }
         }
 
-        if (ActivityId != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.ACTIVITY_ID))) {
+        if (ActivityId != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.ACTIVITY_ID))) {
             headerCopy.put(HttpConstants.Headers.ACTIVITY_ID, ActivityId);
         }
 
-        if (SessionToken != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.SESSION_TOKEN))) {
+        if (SessionToken != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.SESSION_TOKEN))) {
             headerCopy.put(HttpConstants.Headers.SESSION_TOKEN, SessionToken);
         }
 
-        if (ConsistencyLevel != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.CONSISTENCY_LEVEL))) {
+        if (ConsistencyLevel != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.CONSISTENCY_LEVEL))) {
             headerCopy.put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel);
         }
 
-        if (ServiceVersion != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.SERVER_VERSION))) {
+        if (ServiceVersion != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.SERVER_VERSION))) {
             headerCopy.put(HttpConstants.Headers.SERVER_VERSION, ServiceVersion);
         }
 
-        if (PartitionKey != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.PARTITION_KEY))) {
+        if (PartitionKey != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.PARTITION_KEY))) {
             headerCopy.put(HttpConstants.Headers.PARTITION_KEY, ServiceVersion);
         }
 
-        if (Etag != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.E_TAG))) {
+        if (Etag != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.E_TAG))) {
             headerCopy.put(HttpConstants.Headers.E_TAG, Etag);
         }
 
-        if (RequestCharge != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.REQUEST_CHARGE))) {
+        if (RequestCharge != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.REQUEST_CHARGE))) {
             headerCopy.put(HttpConstants.Headers.REQUEST_CHARGE, RequestCharge);
         }
 
@@ -226,9 +228,5 @@ public abstract class HttpHeaders
     }
 
     protected abstract Map<String, String> exportHeadersInternal();
-
-    public interface HeaderNameFilerFunc {
-        boolean doExclude(String headerName);
-    }
 }
 
