@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class HttpHeadersFactory {
     private static final String defaultHeaderCountName = "com.azure.cosmos.http.headers.defaultsize";
-    private static final String includePromotedHeaderValidation = "com.azure.cosmos.httpheaders.promoted-validation";
+    public static final String includePromotedHeaderValidation = "com.azure.cosmos.httpheaders.promoted-validation";
     private static final int systemDefaultHeadersCount = 32; // Only re-allocations on 23rd header insert
 
     // Not marked volatile and will eventually catch-up
@@ -45,6 +45,20 @@ public class HttpHeadersFactory {
         }
 
         return defaultHeadersCount;
+    }
+
+    public static boolean getBooleanConfig(String name) {
+        String value = System.getProperty(name);
+        if (StringUtils.isNotEmpty(value)) {
+            try {
+                Boolean retValue = Boolean.parseBoolean(value);
+                System.out.println("Read value:" + retValue + " for config:" + name);
+                return retValue;
+            } catch (Exception ex) {
+            }
+        }
+
+        return false;
     }
 
     public static HttpHeaders fromNettyHeaders(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {

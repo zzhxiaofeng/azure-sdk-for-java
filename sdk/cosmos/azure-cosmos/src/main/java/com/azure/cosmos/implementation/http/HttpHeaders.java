@@ -15,13 +15,15 @@ import java.util.Map;
  */
 public abstract class HttpHeaders
 {
-    private static final ImmutableMap<String, String> BYPASS_LIST = ImmutableMap.of(
-        "x-ms-serviceversion", "A",
-        "x-ms-session-token", "A",
-        "x-ms-documentdb-partitionkey", "A",
-        "x-ms-consistency-level", "A",
-        "x-ms-activity-id", "A"
-    );
+    private static final boolean enableValidation = HttpHeadersFactory.getBooleanConfig(HttpHeadersFactory.includePromotedHeaderValidation);
+    private static final ImmutableMap<String, String> BYPASS_LIST =
+        ImmutableMap.of(
+            "x-ms-serviceversion", "A",
+            "x-ms-session-token", "A",
+            "x-ms-documentdb-partitionkey", "A",
+            "x-ms-consistency-level", "A",
+            "x-ms-activity-id", "A"
+        );
 
     public String ActivityId = null;
     public String SessionToken = null;
@@ -58,7 +60,7 @@ public abstract class HttpHeaders
      * @return this HttpHeaders
      */
     public void put(String name, String value) {
-        if (BYPASS_LIST.containsKey(name)) {
+        if (enableValidation && BYPASS_LIST.containsKey(name)) {
             throw new IllegalArgumentException("Use preferred name for header:" + name);
         }
 
@@ -77,7 +79,7 @@ public abstract class HttpHeaders
      * @return this HttpHeaders
      */
     public void remove(String name) {
-        if (BYPASS_LIST.containsKey(name)) {
+        if (enableValidation && BYPASS_LIST.containsKey(name)) {
             throw new IllegalArgumentException("Use preferred name for header:" + name);
         }
 
@@ -94,7 +96,7 @@ public abstract class HttpHeaders
      * @return The String value of the header, or null if the header isn't found
      */
     public String getValue(String name) {
-        if (BYPASS_LIST.containsKey(name)) {
+        if (enableValidation && BYPASS_LIST.containsKey(name)) {
             throw new IllegalArgumentException("Use preferred name for header:" + name);
         }
 
