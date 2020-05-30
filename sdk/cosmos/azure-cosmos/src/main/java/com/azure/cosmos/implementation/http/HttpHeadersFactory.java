@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -86,6 +88,18 @@ public class HttpHeadersFactory {
                         break;
                     case HttpConstants.Headers.REQUEST_CHARGE:
                         newHeaders.RequestCharge = e.getValue();
+                        break;
+                    case HttpConstants.Headers.LSN:
+                        newHeaders.Lsn = e.getValue();
+                        break;
+                    case WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN:
+                        newHeaders.GlobalCommittedLsn = e.getValue();
+                        break;
+                    case WFConstants.BackendHeaders.ITEM_LSN:
+                        newHeaders.ItemLsn = e.getValue();
+                        break;
+                    case WFConstants.BackendHeaders.QUORUM_ACKED_LSN:
+                        newHeaders.QuorumAckedLsn = e.getValue();
                         break;
                     default:
                         newHeaders.put(e.getKey(), e.getValue());

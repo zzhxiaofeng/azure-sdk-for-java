@@ -50,7 +50,7 @@ public class StoreResponse {
     }
 
     public long getLSN() {
-        String lsnString = this.httpHeaders.getValue(WFConstants.BackendHeaders.LSN);
+        String lsnString = this.httpHeaders.Lsn;
         if (StringUtils.isNotEmpty(lsnString)) {
             return Long.parseLong(lsnString);
         }

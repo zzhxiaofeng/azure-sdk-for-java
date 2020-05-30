@@ -461,7 +461,7 @@ public class HttpTransportClient extends TransportClient {
 
         // target lsn for head requests.
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.TARGET_LSN, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.TARGET_GLOBAL_COMMITTED_LSN, request);
+        httpRequestHeaders.GlobalCommittedLsn = request.getHeaders().GlobalCommittedLsn;
 
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.FEDERATION_ID_FOR_AUTH, request);
 

@@ -49,7 +49,7 @@ public class WFConstants {
         public static final String HAS_TENTATIVE_WRITES = "x-ms-cosmosdb-has-tentative-writes";
         public static final String IS_RU_PER_MINUTE_USED = "x-ms-documentdb-is-ru-per-minute-used";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
-        public static final String GLOBAL_COMMITTED_LSN = "x-ms-global-Committed-lsn";
+        public static final String GLOBAL_COMMITTED_LSN = "x-ms-global-committed-lsn";
         public static final String NUMBER_OF_READ_REGIONS = "x-ms-number-of-read-regions";
         public static final String OFFER_REPLACE_PENDING = "x-ms-offer-replace-pending";
         public static final String ITEM_LSN = "x-ms-item-lsn";

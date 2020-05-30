@@ -800,7 +800,7 @@ public class StoreReaderDotNetTest {
             StoreResponse result = reader.readStrongAsync(entity, 2, ReadMode.Strong).block();
             assertThat(result.getLSN()).isEqualTo(100);
 
-            String globalCommitedLSN = result.getHeaders().getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
+            String globalCommitedLSN = result.getHeaders().GlobalCommittedLsn;
 
             long nGlobalCommitedLSN = Long.parseLong(globalCommitedLSN);
             assertThat(nGlobalCommitedLSN).isEqualTo(90);
@@ -879,7 +879,7 @@ public class StoreReaderDotNetTest {
             assertThat(result.getLSN()).isEqualTo(100);
 
             String globalCommitedLSN;
-            globalCommitedLSN = result.getHeaders().getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
+            globalCommitedLSN = result.getHeaders().GlobalCommittedLsn;
             long nGlobalCommitedLSN = Long.parseLong(globalCommitedLSN);
             assertThat(nGlobalCommitedLSN).isEqualTo(90);
         }

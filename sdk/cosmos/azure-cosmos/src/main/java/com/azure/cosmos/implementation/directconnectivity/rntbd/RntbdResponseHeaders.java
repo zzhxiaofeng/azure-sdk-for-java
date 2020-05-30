@@ -278,7 +278,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     private void collectEntries(final HttpHeaders responseHeaders) {
 
-        addLongHeaderIfPresent(this.LSN, BackendHeaders.LSN, responseHeaders);
+        addLongHeaderIfPresent(this.LSN, v -> responseHeaders.Lsn = v);
         addLongHeaderIfPresent(this.collectionLazyIndexProgress, Headers.COLLECTION_LAZY_INDEXING_PROGRESS, responseHeaders);
         addLongHeaderIfPresent(this.collectionPartitionIndex, BackendHeaders.COLLECTION_PARTITION_INDEX, responseHeaders);
 
@@ -297,8 +297,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         addBooleanHeaderIfPresent(this.disableRntbdChannel, Headers.DISABLE_RNTBD_CHANNEL, responseHeaders);
 
         addStringHeaderIfPresent(this.eTag, v -> responseHeaders.Etag = v);
-
-        addLongHeaderIfPresent(this.globalCommittedLSN, BackendHeaders.GLOBAL_COMMITTED_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.globalCommittedLSN, v -> responseHeaders.GlobalCommittedLsn = v);
 
         addBooleanHeaderIfPresent(this.hasTentativeWrites, BackendHeaders.HAS_TENTATIVE_WRITES, responseHeaders);
 
@@ -309,7 +308,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         addByteHeaderIfPresent(this.isRUPerMinuteUsed, BackendHeaders.IS_RU_PER_MINUTE_USED, responseHeaders);
 
         addLongHeaderIfPresent(this.itemCount, Headers.ITEM_COUNT, responseHeaders);
-        addLongHeaderIfPresent(this.itemLSN, BackendHeaders.ITEM_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.itemLSN, v -> responseHeaders.ItemLsn = v);
         addLongHeaderIfPresent(this.itemLocalLSN, BackendHeaders.ITEM_LOCAL_LSN, responseHeaders);
 
         addStringHeaderIfPresent(this.lastStateChangeDateTime, Headers.LAST_STATE_CHANGE_UTC, responseHeaders);
@@ -327,7 +326,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         addStringHeaderIfPresent(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, responseHeaders);
         addStringHeaderIfPresent(this.queryMetrics, BackendHeaders.QUERY_METRICS, responseHeaders);
 
-        addLongHeaderIfPresent(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, responseHeaders);
+        addLongHeaderIfPresent(this.quorumAckedLSN, v -> responseHeaders.QuorumAckedLsn = v);
         addLongHeaderIfPresent(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, responseHeaders);
 
         addCurrencyEntryTokenHeaderIfPresent(this.requestCharge, v -> responseHeaders.RequestCharge = v);
@@ -356,6 +355,12 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     private void addLongHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
             responseHeaders.put(headerName, Long.toString(this.LSN.getValue(Long.class)));
+        }
+    }
+
+    private void addLongHeaderIfPresent(final RntbdToken token, final Consumer<String> action) {
+        if (token.isPresent()) {
+            action.accept(Long.toString(this.LSN.getValue(Long.class)));
         }
     }
 

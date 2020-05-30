@@ -76,7 +76,7 @@ public class BarrierRequestHelper {
         }
 
         if (targetGlobalCommittedLsn != null && targetGlobalCommittedLsn > 0) {
-            barrierLsnRequest.getHeaders().put(HttpConstants.Headers.TARGET_GLOBAL_COMMITTED_LSN, targetGlobalCommittedLsn.toString());
+            barrierLsnRequest.getHeaders().GlobalCommittedLsn = targetGlobalCommittedLsn.toString();
         }
 
         switch (originalRequestTokenType) {

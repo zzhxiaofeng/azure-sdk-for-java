@@ -673,8 +673,9 @@ public class StoreReader {
             long itemLSN = -1;
 
             HttpHeaders responseHeaders = storeResponse.getHeaders();
-            if ((headerValue = responseHeaders.getValue(
-                    useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN)) != null) {
+            headerValue = useLocalLSNBasedHeaders ? responseHeaders.getValue(WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN)
+                        : responseHeaders.QuorumAckedLsn;
+            if (headerValue != null) {
                     quorumAckedLSN = Long.parseLong(headerValue);
             }
 
@@ -695,12 +696,13 @@ public class StoreReader {
                 numberOfReadRegions = Integer.parseInt(headerValue);
             }
 
-            if ((headerValue = responseHeaders.getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
+            if ((headerValue = responseHeaders.GlobalCommittedLsn) != null) {
                 globalCommittedLSN = Long.parseLong(headerValue);
             }
 
-            if ((headerValue = responseHeaders.getValue(
-                    useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.ITEM_LOCAL_LSN : WFConstants.BackendHeaders.ITEM_LSN)) != null) {
+            headerValue = useLocalLSNBasedHeaders ? responseHeaders.getValue(WFConstants.BackendHeaders.ITEM_LOCAL_LSN)
+                    : responseHeaders.ItemLsn;
+            if (headerValue != null) {
                 itemLSN = Long.parseLong(headerValue);
             }
 
@@ -745,7 +747,8 @@ public class StoreReader {
                 int currentWriteQuorum = -1;
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
-                String headerValue = cosmosException.getResponseHeaders().getValue(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
+                String headerValue = useLocalLSNBasedHeaders ? cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN)
+                            : cosmosException.getResponseHeaders().QuorumAckedLsn;
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     quorumAckedLSN = Long.parseLong(headerValue);
                 }
@@ -771,7 +774,7 @@ public class StoreReader {
                     numberOfReadRegions = Integer.parseInt(headerValue);
                 }
 
-                headerValue = cosmosException.getResponseHeaders().getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
+                headerValue = cosmosException.getResponseHeaders().GlobalCommittedLsn;
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     globalCommittedLSN = Integer.parseInt(headerValue);
                 }

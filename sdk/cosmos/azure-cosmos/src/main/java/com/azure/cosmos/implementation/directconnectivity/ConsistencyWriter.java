@@ -350,11 +350,11 @@ public class ConsistencyWriter {
         String headerValue;
 
         HttpHeaders responseHeaders = response.getHeaders();
-        if ((headerValue = responseHeaders.getValue(WFConstants.BackendHeaders.LSN)) != null) {
+        if ((headerValue = responseHeaders.Lsn) != null) {
             lsn.v = Long.parseLong(headerValue);
         }
 
-        if ((headerValue = responseHeaders.getValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
+        if ((headerValue = responseHeaders.GlobalCommittedLsn) != null) {
             globalCommittedLsn.v = Long.parseLong(headerValue);
         }
     }

@@ -66,7 +66,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withQuorumAckecdLsn(long quorumAckecdLsn) {
-        headerEntries.put(WFConstants.BackendHeaders.QUORUM_ACKED_LSN, Long.toString(quorumAckecdLsn));
+        headerEntries.QuorumAckedLsn = Long.toString(quorumAckecdLsn);
         return this;
     }
 
@@ -76,7 +76,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withGlobalCommittedLsn(long globalCommittedLsn) {
-        headerEntries.put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
+        headerEntries.GlobalCommittedLsn = Long.toString(globalCommittedLsn);
         return this;
     }
 

@@ -137,7 +137,7 @@ public class StoreClient implements IStoreClient {
 
     private long getLSN(HttpHeaders headers) {
         long defaultValue = -1;
-        String value = headers.getValue(WFConstants.BackendHeaders.LSN);
+        String value = headers.Lsn;
 
         if (!Strings.isNullOrEmpty(value)) {
             return NumberUtils.toLong(value, defaultValue);

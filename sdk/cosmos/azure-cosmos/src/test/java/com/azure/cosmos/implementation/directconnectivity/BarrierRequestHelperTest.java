@@ -212,7 +212,7 @@ public class BarrierRequestHelperTest {
     }
 
     private Long getTargetGlobalLsn(RxDocumentServiceRequest req) {
-        return Long.parseLong(getHeaderValue(req, HttpConstants.Headers.TARGET_GLOBAL_COMMITTED_LSN));
+        return Long.parseLong(req.getHeaders().GlobalCommittedLsn);
     }
 }
 

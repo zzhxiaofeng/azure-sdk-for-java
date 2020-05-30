@@ -148,7 +148,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getSecondaryReadonlyKey, BackendHeaders.SECONDARY_READONLY_KEY);
         this.fillTokenFromHeader(this::getSessionToken, Headers.SESSION_TOKEN, headers.SessionToken);
         this.fillTokenFromHeader(headers, this::getSharedOfferThroughput, Headers.SHARED_OFFER_THROUGHPUT);
-        this.fillTokenFromHeader(headers, this::getTargetGlobalCommittedLsn, Headers.TARGET_GLOBAL_COMMITTED_LSN);
+        this.fillTokenFromHeader(this::getTargetGlobalCommittedLsn, Headers.TARGET_GLOBAL_COMMITTED_LSN, headers.GlobalCommittedLsn);
         this.fillTokenFromHeader(headers, this::getTargetLsn, Headers.TARGET_LSN);
         this.fillTokenFromHeader(headers, this::getTimeToLiveInSeconds, BackendHeaders.TIME_TO_LIVE_IN_SECONDS);
         this.fillTokenFromHeader(headers, this::getTransportRequestID, Headers.TRANSPORT_REQUEST_ID);

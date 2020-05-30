@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 
@@ -29,6 +30,11 @@ public abstract class HttpHeaders
         builder.put("etag", "A");
         builder.put("x-ms-request-charge", "A");
 
+        builder.put("lsn", "A");
+        builder.put("x-ms-global-Committed-lsn", "A");
+        builder.put("x-ms-item-lsn", "A");
+        builder.put("x-ms-quorum-acked-lsn", "A");
+
         return builder.build();
     }
 
@@ -40,6 +46,11 @@ public abstract class HttpHeaders
 
     public String Etag = null;
     public String RequestCharge = null;
+
+    public String Lsn = null;
+    public String GlobalCommittedLsn = null;
+    public String ItemLsn = null;
+    public String QuorumAckedLsn = null;
 
     /**
      * Create a HttpHeaders instance with the provided initial headers.
@@ -158,6 +169,11 @@ public abstract class HttpHeaders
         copyHeader(HttpConstants.Headers.E_TAG, Etag, nameFilerFunc, headerCopy);
         copyHeader(HttpConstants.Headers.REQUEST_CHARGE, RequestCharge, nameFilerFunc, headerCopy);
 
+        copyHeader(HttpConstants.Headers.LSN, Lsn, nameFilerFunc, headerCopy);
+        copyHeader(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, GlobalCommittedLsn, nameFilerFunc, headerCopy);
+        copyHeader(WFConstants.BackendHeaders.ITEM_LSN, ItemLsn, nameFilerFunc, headerCopy);
+        copyHeader(WFConstants.BackendHeaders.QUORUM_ACKED_LSN, QuorumAckedLsn, nameFilerFunc, headerCopy);
+
         return headerCopy;
     }
 
@@ -204,6 +220,26 @@ public abstract class HttpHeaders
                 case HttpConstants.Headers.REQUEST_CHARGE:
                     if (RequestCharge == null) {
                         RequestCharge = header.getValue();
+                    }
+                    break;
+                case HttpConstants.Headers.LSN:
+                    if (Lsn == null) {
+                        Lsn = header.getValue();
+                    }
+                    break;
+                case WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN:
+                    if (GlobalCommittedLsn == null) {
+                        GlobalCommittedLsn = header.getValue();
+                    }
+                    break;
+                case WFConstants.BackendHeaders.ITEM_LSN:
+                    if (ItemLsn == null) {
+                        ItemLsn = header.getValue();
+                    }
+                    break;
+                case WFConstants.BackendHeaders.QUORUM_ACKED_LSN:
+                    if (QuorumAckedLsn == null) {
+                        QuorumAckedLsn = header.getValue();
                     }
                     break;
                 default:
