@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Some doc TBD
@@ -151,35 +150,22 @@ public abstract class HttpHeaders
             }
         }
 
-        if (ActivityId != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.ACTIVITY_ID))) {
-            headerCopy.put(HttpConstants.Headers.ACTIVITY_ID, ActivityId);
-        }
-
-        if (SessionToken != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.SESSION_TOKEN))) {
-            headerCopy.put(HttpConstants.Headers.SESSION_TOKEN, SessionToken);
-        }
-
-        if (ConsistencyLevel != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.CONSISTENCY_LEVEL))) {
-            headerCopy.put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel);
-        }
-
-        if (ServiceVersion != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.SERVER_VERSION))) {
-            headerCopy.put(HttpConstants.Headers.SERVER_VERSION, ServiceVersion);
-        }
-
-        if (PartitionKey != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.PARTITION_KEY))) {
-            headerCopy.put(HttpConstants.Headers.PARTITION_KEY, ServiceVersion);
-        }
-
-        if (Etag != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.E_TAG))) {
-            headerCopy.put(HttpConstants.Headers.E_TAG, Etag);
-        }
-
-        if (RequestCharge != null && (nameFilerFunc == null || !nameFilerFunc.apply(HttpConstants.Headers.REQUEST_CHARGE))) {
-            headerCopy.put(HttpConstants.Headers.REQUEST_CHARGE, RequestCharge);
-        }
+        copyHeader(HttpConstants.Headers.ACTIVITY_ID, ActivityId, nameFilerFunc, headerCopy);
+        copyHeader(HttpConstants.Headers.SESSION_TOKEN, SessionToken, nameFilerFunc, headerCopy);
+        copyHeader(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel, nameFilerFunc, headerCopy);
+        copyHeader(HttpConstants.Headers.SERVER_VERSION, ServiceVersion, nameFilerFunc, headerCopy);
+        copyHeader(HttpConstants.Headers.PARTITION_KEY_RANGE_ID, PartitionKey, nameFilerFunc, headerCopy);
+        copyHeader(HttpConstants.Headers.E_TAG, Etag, nameFilerFunc, headerCopy);
+        copyHeader(HttpConstants.Headers.REQUEST_CHARGE, RequestCharge, nameFilerFunc, headerCopy);
 
         return headerCopy;
+    }
+
+    private void copyHeader(String headername, String headerValue, Function<String,
+            Boolean> nameFilerFunc, Map<String, String> target) {
+        if (headerValue != null && (nameFilerFunc == null || !nameFilerFunc.apply(headername))) {
+            target.put(HttpConstants.Headers.REQUEST_CHARGE, headerValue);
+        }
     }
 
     public void includeIfNotExistsHeaders(Map<String, String> defaultHeaders) {
