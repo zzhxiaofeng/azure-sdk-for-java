@@ -240,7 +240,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().getValue(WFConstants.BackendHeaders.LSN);
                     long lsn = Long.valueOf(lsnHeaderValue);
-                    String sessionTokenHeaderValue = queryResponse.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+                    String sessionTokenHeaderValue = queryResponse.getResponseHeaders().SESSION_TOKEN;
                     ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
                     logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
                     assertThat(lsn).isEqualTo(sessionToken.getLSN());
@@ -252,7 +252,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         } else if (clientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                             String lsnHeaderValue = clientException.getResponseHeaders().getValue(WFConstants.BackendHeaders.LSN);
                             long lsn = Long.valueOf(lsnHeaderValue);
-                            String sessionTokenHeaderValue = clientException.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+                            String sessionTokenHeaderValue = clientException.getResponseHeaders().SESSION_TOKEN;
                             ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
 
                             logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);

@@ -31,7 +31,7 @@ public final class StoredProcedureResponse {
      * @return the activity id.
      */
     public String getActivityId() {
-        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.ACTIVITY_ID);
+        return this.response.getResponseHeaders().ACTIVITY_ID;
     }
 
     /**
@@ -40,7 +40,7 @@ public final class StoredProcedureResponse {
      * @return the session token.
      */
     public String getSessionToken() {
-        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        return this.response.getResponseHeaders().SESSION_TOKEN;
     }
 
     /**

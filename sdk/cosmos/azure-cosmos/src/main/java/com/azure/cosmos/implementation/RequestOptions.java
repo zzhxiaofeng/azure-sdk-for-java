@@ -18,7 +18,7 @@ import java.util.Map;
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
 public class RequestOptions {
-    private HttpHeaders customOptions;
+    private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private IndexingDirective indexingDirective;
@@ -310,7 +310,7 @@ public class RequestOptions {
      */
     public void setHeader(String name, String value) {
         if (this.customOptions == null) {
-            this.customOptions = HttpHeadersFactory.create();
+            this.customOptions = new HashMap<>();
         }
         this.customOptions.put(name, value);
     }
@@ -320,7 +320,7 @@ public class RequestOptions {
      *
      * @return Map of custom request options
      */
-    public HttpHeaders getHeaders() {
+    public Map<String, String> getHeaders() {
         return this.customOptions;
     }
     /**

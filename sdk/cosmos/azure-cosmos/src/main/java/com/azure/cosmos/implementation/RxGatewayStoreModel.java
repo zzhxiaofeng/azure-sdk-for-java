@@ -166,9 +166,9 @@ class RxGatewayStoreModel implements RxStoreModel {
         HttpHeaders httpHeaders = HttpHeadersFactory.create();
         // Add default headers.
         for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
-            if (reqeustheaders.getValue(entry.getKey()) == null) {
+            if (reqeustheaders.getValueExtended(entry.getKey()) == null) {
                 // populate default header only if there is no overwrite by the request header
-                httpHeaders.put(entry.getKey(), entry.getValue());
+                httpHeaders.putExtended(entry.getKey(), entry.getValue());
             }
         }
 
@@ -177,9 +177,9 @@ class RxGatewayStoreModel implements RxStoreModel {
             for (Map.Entry<String, String> entry : reqeustheaders.exportHeaders().entrySet()) {
                 if (entry.getValue() == null) {
                     // netty doesn't allow setting null value in header
-                    httpHeaders.put(entry.getKey(), "");
+                    httpHeaders.putExtended(entry.getKey(), "");
                 } else {
-                    httpHeaders.put(entry.getKey(), entry.getValue());
+                    httpHeaders.putExtended(entry.getKey(), entry.getValue());
                 }
             }
         }
@@ -418,14 +418,14 @@ class RxGatewayStoreModel implements RxStoreModel {
         HttpHeaders headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN))) {
+        if (!Strings.isNullOrEmpty(request.getHeaders().SESSION_TOKEN)) {
             if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
-                request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
+                request.getHeaders().SESSION_TOKEN = null;
             }
             return; //User is explicitly controlling the session.
         }
 
-        String requestConsistencyLevel = headers.getValue(HttpConstants.Headers.CONSISTENCY_LEVEL);
+        String requestConsistencyLevel = headers.CONSISTENCY_LEVEL;
 
         boolean sessionConsistency =
                 this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||
@@ -440,7 +440,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
 
         if (!Strings.isNullOrEmpty(sessionToken)) {
-            headers.put(HttpConstants.Headers.SESSION_TOKEN, sessionToken);
+            headers.SESSION_TOKEN = sessionToken;
         }
     }
 }

@@ -148,7 +148,7 @@ implements IDocumentQueryExecutionContext<T> {
                 // irrespective of the chosen replica.
                 // For server resources, which don't span partitions, specify the session token
                 // for correct replica to be chosen for servicing the query result.
-                requestHeaders.put(HttpConstants.Headers.SESSION_TOKEN, feedOptions.getSessionToken());
+                requestHeaders.SESSION_TOKEN = feedOptions.getSessionToken();
             }
         }
 
@@ -170,7 +170,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (desiredConsistencyLevel != null) {
-            requestHeaders.put(HttpConstants.Headers.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
+            requestHeaders.CONSISTENCY_LEVEL = desiredConsistencyLevel.toString();
         }
 
         if(feedOptions.isQueryMetricsEnabled()){
@@ -188,7 +188,7 @@ implements IDocumentQueryExecutionContext<T> {
         if (this.resourceTypeEnum.isPartitioned()) {
             if (partitionKey != null) {
                 request.setPartitionKeyInternal(partitionKey);
-                request.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, partitionKey.toJson());
+                request.getHeaders().PARTITION_KEY = partitionKey.toJson();
             }
         }
     }
@@ -204,7 +204,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (this.resourceTypeEnum.isPartitioned()) {
-            boolean hasPartitionKey = request.getHeaders().getValue(HttpConstants.Headers.PARTITION_KEY) != null;
+            boolean hasPartitionKey = request.getHeaders().PARTITION_KEY != null;
             if(!hasPartitionKey){
                 request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
             }

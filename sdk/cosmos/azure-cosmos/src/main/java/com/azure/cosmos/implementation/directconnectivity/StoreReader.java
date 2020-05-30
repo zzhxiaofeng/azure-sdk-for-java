@@ -93,7 +93,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        String originalSessionToken = entity.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String originalSessionToken = entity.getHeaders().SESSION_TOKEN;
 
         if (entity.requestContext.cosmosDiagnostics == null) {
             entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
@@ -446,7 +446,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        String originalSessionToken = entity.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String originalSessionToken = entity.getHeaders().SESSION_TOKEN;
         if (entity.requestContext.cosmosDiagnostics == null) {
             entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
         }
@@ -716,7 +716,7 @@ public class StoreReader {
             ISessionToken sessionToken = null;
             // SESSION token response header is introduced from getVersion HttpConstants.Versions.v2018_06_18 onwards.
             // Previously it was only a request header
-            if ((headerValue = responseHeaders.getValue(HttpConstants.Headers.SESSION_TOKEN)) != null) {
+            if ((headerValue = responseHeaders.SESSION_TOKEN) != null) {
                 sessionToken = SessionTokenHelper.parse(headerValue);
             }
 
@@ -790,7 +790,7 @@ public class StoreReader {
 
                 // SESSION token response header is introduced from getVersion HttpConstants.Versions.v2018_06_18 onwards.
                 // Previously it was only a request header
-                headerValue = cosmosException.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+                headerValue = cosmosException.getResponseHeaders().SESSION_TOKEN;
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     sessionToken = SessionTokenHelper.parse(headerValue);
                 }

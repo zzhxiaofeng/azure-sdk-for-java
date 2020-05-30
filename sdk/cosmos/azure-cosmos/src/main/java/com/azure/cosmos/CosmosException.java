@@ -151,7 +151,7 @@ public class CosmosException extends AzureException {
      */
     public String getActivityId() {
         if (this.responseHeaders != null) {
-            return this.responseHeaders.getValue(HttpConstants.Headers.ACTIVITY_ID);
+            return this.responseHeaders.ACTIVITY_ID;
         }
 
         return null;
