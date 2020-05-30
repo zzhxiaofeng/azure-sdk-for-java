@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import java.util.HashMap;
 import java.util.Locale;
@@ -43,4 +44,20 @@ public class HttpHeadersFactory {
         }
 
         return defaultHeadersCount;
-    }}
+    }
+
+
+    public static HttpHeaders fromNettyHeaders(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
+        HttpHeaders newHeaders = HttpHeadersFactory.create(nettyHeaders.size());
+        nettyHeaders.forEach(e ->
+            {
+                if (HttpConstants.Headers.ACTIVITY_ID.equalsIgnoreCase(e.getKey())) {
+                    newHeaders.setActivityId(e.getValue());
+                } else {
+                    newHeaders.put(e.getKey(), e.getValue());
+                }
+            });
+
+        return newHeaders;
+    }
+}

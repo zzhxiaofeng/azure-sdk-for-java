@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.Configs;
 import io.netty.buffer.ByteBuf;
@@ -185,9 +186,7 @@ class ReactorNettyClient implements HttpClient {
 
         @Override
         public HttpHeaders headers() {
-            HttpHeaders headers = HttpHeadersFactory.create();
-            reactorNettyResponse.responseHeaders().forEach(e -> headers.put(e.getKey(), e.getValue()));
-            return headers;
+            return HttpHeadersFactory.fromNettyHeaders(reactorNettyResponse.responseHeaders());
         }
 
         @Override

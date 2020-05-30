@@ -217,7 +217,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return the activity id.
      */
     public String getActivityId() {
-        return this.response.getResponseHeaders().getValue(HttpConstants.Headers.ACTIVITY_ID);
+        return this.response.getResponseHeaders().getActivityId();
     }
 
     /**
