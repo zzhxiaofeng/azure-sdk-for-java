@@ -23,7 +23,7 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        String requestConsistencyLevelHeaderValue = request.getHeaders().getValue(HttpConstants.Headers.CONSISTENCY_LEVEL);
+        String requestConsistencyLevelHeaderValue = request.getHeaders().ConsistencyLevel;
 
         request.requestContext.originalRequestConsistencyLevel = null;
 
@@ -42,7 +42,7 @@ public class ServerStoreModel implements RxStoreModel {
         }
 
         if (ReplicatedResourceClient.isMasterResource(request.getResourceType())) {
-            request.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
+            request.getHeaders().ConsistencyLevel = ConsistencyLevel.STRONG.toString();
         }
 
         return this.storeClient.processMessageAsync(request);

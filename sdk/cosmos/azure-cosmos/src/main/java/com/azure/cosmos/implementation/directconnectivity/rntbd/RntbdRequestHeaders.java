@@ -616,8 +616,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     }
 
     private void addConsistencyLevelHeader(final HttpHeaders headers) {
-
-        final String value = headers.getValue(Headers.CONSISTENCY_LEVEL);
+        final String value = headers.ConsistencyLevel;
 
         if (StringUtils.isNotEmpty(value)) {
 

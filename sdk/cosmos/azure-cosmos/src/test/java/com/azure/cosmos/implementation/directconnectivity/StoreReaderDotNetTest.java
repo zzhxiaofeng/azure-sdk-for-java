@@ -576,7 +576,7 @@ public class StoreReaderDotNetTest {
         entity.setResourceId("1-MxAPlgMgA=");
 
         // set consistency level on the request to Bounded Staleness
-        entity.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.BOUNDED_STALENESS.toString());
+        entity.getHeaders().ConsistencyLevel = ConsistencyLevel.BOUNDED_STALENESS.toString();
 
         // also setup timeout helper, used in store reader
         entity.requestContext.timeoutHelper = new TimeoutHelper(Duration.ofSeconds(2 * 60 * 60 + 2 * 60 + 2));
@@ -664,7 +664,7 @@ public class StoreReaderDotNetTest {
         entity.setResourceId("1-MxAPlgMgA=");
 
         // set consistency level on the request to Bounded Staleness
-        entity.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
+        entity.getHeaders().ConsistencyLevel = ConsistencyLevel.STRONG.toString();
 
         // also setup timeout helper, used in store reader
         entity.requestContext.timeoutHelper = new TimeoutHelper(Duration.ofSeconds(2 * 60 * 60 + 2 * 60 + 2));
@@ -751,7 +751,7 @@ public class StoreReaderDotNetTest {
         entity.setResourceId("1-MxAPlgMgA=");
 
         // set consistency level on the request to Bounded Staleness
-        entity.getHeaders().put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel.BOUNDED_STALENESS.toString());
+        entity.getHeaders().ConsistencyLevel = ConsistencyLevel.BOUNDED_STALENESS.toString();
 
         // also setup timeout helper, used in store reader
         entity.requestContext.timeoutHelper = new TimeoutHelper(Duration.ofSeconds(2 * 60 * 60 + 2 * 60 + 2));

@@ -163,27 +163,8 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private HttpHeaders getHttpRequestHeaders(HttpHeaders reqeustheaders) {
-        HttpHeaders httpHeaders = HttpHeadersFactory.create();
-        // Add default headers.
-        for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
-            if (reqeustheaders.getValue(entry.getKey()) == null) {
-                // populate default header only if there is no overwrite by the request header
-                httpHeaders.put(entry.getKey(), entry.getValue());
-            }
-        }
-
-        // Add override headers.
-        if (reqeustheaders != null) {
-            for (Map.Entry<String, String> entry : reqeustheaders.exportHeaders().entrySet()) {
-                if (entry.getValue() == null) {
-                    // netty doesn't allow setting null value in header
-                    httpHeaders.put(entry.getKey(), "");
-                } else {
-                    httpHeaders.put(entry.getKey(), entry.getValue());
-                }
-            }
-        }
-        return httpHeaders;
+        reqeustheaders.includeIfNotExistsHeaders(this.defaultHeaders);
+        return reqeustheaders;
     }
 
     private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {
@@ -425,7 +406,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             return; //User is explicitly controlling the session.
         }
 
-        String requestConsistencyLevel = headers.getValue(HttpConstants.Headers.CONSISTENCY_LEVEL);
+        String requestConsistencyLevel = headers.ConsistencyLevel;
 
         boolean sessionConsistency =
                 this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||

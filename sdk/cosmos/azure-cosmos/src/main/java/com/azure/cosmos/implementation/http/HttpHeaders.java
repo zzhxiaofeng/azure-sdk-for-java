@@ -17,11 +17,13 @@ public abstract class HttpHeaders
 {
     private static final ImmutableMap<String, String> BYPASS_LIST = ImmutableMap.of(
         "x-ms-session-token", "A",
+        "x-ms-consistency-level", "A",
         "x-ms-activity-id", "A"
     );
 
     public String ActivityId = null;
     public String SessionToken = null;
+    public String ConsistencyLevel = null;
 
     /**
      * Create a HttpHeaders instance with the provided initial headers.
@@ -140,7 +142,36 @@ public abstract class HttpHeaders
             headerCopy.put(HttpConstants.Headers.SESSION_TOKEN, SessionToken);
         }
 
+        if (ConsistencyLevel != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.CONSISTENCY_LEVEL))) {
+            headerCopy.put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel);
+        }
+
         return headerCopy;
+    }
+
+    public void includeIfNotExistsHeaders(Map<String, String> defaultHeaders) {
+        for (final Map.Entry<String, String> header : defaultHeaders.entrySet()) {
+            switch (header.getKey().toLowerCase()) {
+                case HttpConstants.Headers.ACTIVITY_ID:
+                    if (ActivityId == null) {
+                        ActivityId = header.getValue();
+                    }
+                    break;
+                case HttpConstants.Headers.SESSION_TOKEN:
+                    if (SessionToken == null) {
+                        SessionToken = header.getValue();
+                    }
+                    break;
+                case HttpConstants.Headers.CONSISTENCY_LEVEL:
+                    if (ConsistencyLevel == null) {
+                        ConsistencyLevel = header.getValue();
+                    }
+                    break;
+                default:
+                    put(header.getKey(), header.getValue());
+                    break;
+            }
+        }
     }
 
     protected abstract Map<String, String> exportHeadersInternal();

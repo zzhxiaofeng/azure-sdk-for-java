@@ -871,7 +871,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (consistencyLevel != null) {
-            headers.put(HttpConstants.Headers.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            headers.ConsistencyLevel = consistencyLevel.toString();
         }
 
         //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
@@ -897,7 +897,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options.getConsistencyLevel() != null) {
-            headers.put(HttpConstants.Headers.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
+            headers.ConsistencyLevel = options.getConsistencyLevel().toString();
         }
 
         if (options.getIndexingDirective() != null) {

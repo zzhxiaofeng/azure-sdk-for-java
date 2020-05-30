@@ -13,7 +13,8 @@ import java.util.Map;
  * A collection of headers on an HTTP request or response.
  */
 public class HttpHeadersFactory {
-    private static final String defaultHeaderCountName = "com.azure.cosmos.http.default.headerssize";
+    private static final String defaultHeaderCountName = "com.azure.cosmos.http.headers.defaultsize";
+    private static final String includePromotedHeaderValidation = "com.azure.cosmos.httpheaders.promoted-validation";
     private static final int systemDefaultHeadersCount = 32; // Only re-allocations on 23rd header insert
 
     // Not marked volatile and will eventually catch-up
@@ -46,7 +47,6 @@ public class HttpHeadersFactory {
         return defaultHeadersCount;
     }
 
-
     public static HttpHeaders fromNettyHeaders(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
         HttpHeaders newHeaders = HttpHeadersFactory.create(nettyHeaders.size());
         nettyHeaders.forEach(e ->
@@ -57,6 +57,9 @@ public class HttpHeadersFactory {
                         break;
                     case HttpConstants.Headers.SESSION_TOKEN:
                         newHeaders.SessionToken = e.getValue();
+                        break;
+                    case HttpConstants.Headers.CONSISTENCY_LEVEL:
+                        newHeaders.ConsistencyLevel = e.getValue();
                         break;
                     default:
                         newHeaders.put(e.getKey(), e.getValue());

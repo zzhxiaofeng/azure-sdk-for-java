@@ -148,7 +148,7 @@ public class StoreClient implements IStoreClient {
     }
 
     private void updateResponseHeader(RxDocumentServiceRequest request, HttpHeaders headers) {
-        String requestConsistencyLevel = request.getHeaders().getValue(HttpConstants.Headers.CONSISTENCY_LEVEL);
+        String requestConsistencyLevel = request.getHeaders().ConsistencyLevel;
 
         boolean sessionConsistency =
                 this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION ||
