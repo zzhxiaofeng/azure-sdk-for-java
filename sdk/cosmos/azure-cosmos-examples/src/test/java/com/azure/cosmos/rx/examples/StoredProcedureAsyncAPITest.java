@@ -117,7 +117,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
                         e.printStackTrace();
                     }
                     successfulCompletionLatch.countDown();
-                    System.out.println(storedProcedureResponse.ActivityId);
+                    System.out.println(storedProcedureResponse.getActivityId());
                 }, error -> {
                     System.err.println("an error occurred while executing the stored procedure: actual cause: "
                                                + error.getMessage());
@@ -159,7 +159,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
                     assertThat(storedProcResultAsString, equalTo("\"2*a is 246\""));
                     successfulCompletionLatch.countDown();
-                    System.out.println(storedProcedureResponse.ActivityId);
+                    System.out.println(storedProcedureResponse.getActivityId());
                 }, error -> {
                     System.err.println("an error occurred while executing the stored procedure: actual cause: "
                                                + error.getMessage());
@@ -206,7 +206,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
                     assertThat(storedProcResultAsString, equalTo("\"a is my temp value\""));
                     successfulCompletionLatch.countDown();
-                    System.out.println(storedProcedureResponse.ActivityId);
+                    System.out.println(storedProcedureResponse.getActivityId());
                 }, error -> {
                     System.err.println("an error occurred while executing the stored procedure: actual cause: "
                                                + error.getMessage());

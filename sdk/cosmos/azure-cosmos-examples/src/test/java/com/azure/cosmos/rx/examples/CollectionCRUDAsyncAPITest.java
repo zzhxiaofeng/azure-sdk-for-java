@@ -121,7 +121,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
 
         createCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
-                    System.out.println(collectionResourceResponse.ActivityId);
+                    System.out.println(collectionResourceResponse.getActivityId());
                     countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -153,7 +153,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
 
         createCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
-                    System.out.println(collectionResourceResponse.ActivityId);
+                    System.out.println(collectionResourceResponse.getActivityId());
                     countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -179,7 +179,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
             @Override
             public void accept(ResourceResponse<DocumentCollection> resourceResponse) {
                 // Collection is created
-                System.out.println(resourceResponse.ActivityId);
+                System.out.println(resourceResponse.getActivityId());
                 countDownLatch.countDown();
             }
         };
@@ -271,7 +271,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
 
         readCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
-                    System.out.println(collectionResourceResponse.ActivityId);
+                    System.out.println(collectionResourceResponse.getActivityId());
                     countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -301,7 +301,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
 
         deleteCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
-                    System.out.println(collectionResourceResponse.ActivityId);
+                    System.out.println(collectionResourceResponse.getActivityId());
                     countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
@@ -342,7 +342,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
             DocumentCollection foundCollection = collectionFeedResponse.getResults().get(0);
             assertThat(foundCollection.getId(), equalTo(collection.getId()));
 
-            System.out.println(collectionFeedResponse.ActivityId);
+            System.out.println(collectionFeedResponse.getActivityId());
             countDownLatch.countDown();
         }, error -> {
             System.err.println("an error occurred while querying the collection: actual cause: " + error.getMessage());
