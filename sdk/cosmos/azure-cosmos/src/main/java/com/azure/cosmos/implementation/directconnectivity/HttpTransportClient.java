@@ -671,7 +671,8 @@ public class HttpTransportClient extends TransportClient {
                                     RMResources.InvalidBackendResponse),
                             null,
                             physicalAddress);
-            exception.getResponseHeaders().ACTIVITY_ID = activityId;
+            exception.getResponseHeaders().put(HttpConstants.Headers.ACTIVITY_ID,
+                    activityId);
             exception.getResponseHeaders().put(HttpConstants.Headers.REQUEST_VALIDATION_FAILURE, "1");
 
             return Mono.error(exception);
@@ -757,7 +758,8 @@ public class HttpTransportClient extends TransportClient {
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         request.uri().toString());
-                                exception.getResponseHeaders().ACTIVITY_ID = activityId;
+                                exception.getResponseHeaders().put(HttpConstants.Headers.ACTIVITY_ID,
+                                        activityId);
 
                                 break;
                             } else {
@@ -850,7 +852,8 @@ public class HttpTransportClient extends TransportClient {
                                         response.headers(),
                                         request.uri());
 
-                                exception.getResponseHeaders().ACTIVITY_ID = activityId;
+                                exception.getResponseHeaders().put(HttpConstants.Headers.ACTIVITY_ID,
+                                        activityId);
                                 break;
                             }
                         }

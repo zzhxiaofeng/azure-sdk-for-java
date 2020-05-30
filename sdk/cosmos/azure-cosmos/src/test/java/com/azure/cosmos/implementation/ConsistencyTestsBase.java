@@ -581,7 +581,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         try {
             ResourceResponse<Document> documentResponse =
                     writeClient.createDocument(BridgeInternal.getAltLink(createdCollection), getDocumentDefinition(), null, false).block();
-            String token = documentResponse.getResponseHeaders().SESSION_TOKEN;
+            String token = documentResponse.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
 
             // artificially bump to higher LSN
             String higherLsnToken = this.getDifferentLSNToken(token, 2000);

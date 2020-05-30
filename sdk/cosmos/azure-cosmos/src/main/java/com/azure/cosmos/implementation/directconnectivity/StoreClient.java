@@ -148,7 +148,7 @@ public class StoreClient implements IStoreClient {
     }
 
     private void updateResponseHeader(RxDocumentServiceRequest request, HttpHeaders headers) {
-        String requestConsistencyLevel = request.getHeaders().CONSISTENCY_LEVEL;
+        String requestConsistencyLevel = request.getHeaders().getValue(HttpConstants.Headers.CONSISTENCY_LEVEL);
 
         boolean sessionConsistency =
                 this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION ||
@@ -163,7 +163,7 @@ public class StoreClient implements IStoreClient {
         String partitionKeyRangeId = headers.getValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
 
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
-            String inputSession = request.getHeaders().SESSION_TOKEN;
+            String inputSession = request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
             if (!Strings.isNullOrEmpty(inputSession)
                     && inputSession.indexOf(ISessionToken.PARTITION_KEY_RANGE_SESSION_SEPARATOR) >= 1) {
                 partitionKeyRangeId = inputSession.substring(0,
@@ -174,14 +174,14 @@ public class StoreClient implements IStoreClient {
         }
 
         ISessionToken sessionToken = null;
-        String sessionTokenResponseHeader = headers.SESSION_TOKEN;
+        String sessionTokenResponseHeader = headers.getValue(HttpConstants.Headers.SESSION_TOKEN);
         if (!Strings.isNullOrEmpty(sessionTokenResponseHeader)) {
             sessionToken = SessionTokenHelper.parse(sessionTokenResponseHeader);
         }
 
         if (sessionToken != null) {
-            headers.SESSION_TOKEN =
-                        SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, sessionToken.convertToString());
+            headers.put(HttpConstants.Headers.SESSION_TOKEN,
+                        SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, sessionToken.convertToString()));
         }
 
         headers.remove(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);

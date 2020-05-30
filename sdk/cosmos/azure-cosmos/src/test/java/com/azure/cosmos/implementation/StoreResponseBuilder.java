@@ -81,7 +81,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withSessionToken(String sessionToken) {
-        headerEntries.SESSION_TOKEN = sessionToken;
+        headerEntries.put(HttpConstants.Headers.SESSION_TOKEN, sessionToken);
         return this;
     }
 

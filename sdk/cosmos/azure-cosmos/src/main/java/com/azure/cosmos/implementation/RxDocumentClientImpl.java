@@ -871,7 +871,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (consistencyLevel != null) {
-            headers.CONSISTENCY_LEVEL = consistencyLevel.toString();
+            headers.put(HttpConstants.Headers.CONSISTENCY_LEVEL, consistencyLevel.toString());
         }
 
         //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
@@ -883,8 +883,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return headers;
         }
 
-        if (options.getHeaders() != null) {
-            headers.putAll(options.getHeaders());
+        HttpHeaders customOptions = options.getHeaders();
+        if (customOptions != null) {
+            headers.putAll(customOptions.exportHeaders());
         }
 
         if (options.getIfMatchETag() != null) {
@@ -896,7 +897,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options.getConsistencyLevel() != null) {
-            headers.CONSISTENCY_LEVEL = options.getConsistencyLevel().toString();
+            headers.put(HttpConstants.Headers.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 
         if (options.getIndexingDirective() != null) {
@@ -914,7 +915,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (!Strings.isNullOrEmpty(options.getSessionToken())) {
-            headers.SESSION_TOKEN = options.getSessionToken();
+            headers.put(HttpConstants.Headers.SESSION_TOKEN, options.getSessionToken());
         }
 
         if (options.getResourceTokenExpirySeconds() != null) {
@@ -1034,7 +1035,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
-        request.getHeaders().PARTITION_KEY = Utils.escapeNonAscii(partitionKeyInternal.toJson());
+        request.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
     private static PartitionKeyInternal extractPartitionKeyValueFromDocument(

@@ -263,7 +263,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      * @return the activity id.
      */
     public String getActivityId() {
-        return header.ACTIVITY_ID;
+        return getValueOrNull(header, HttpConstants.Headers.ACTIVITY_ID);
     }
 
     @Override

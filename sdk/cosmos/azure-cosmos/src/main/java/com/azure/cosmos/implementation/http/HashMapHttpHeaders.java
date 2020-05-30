@@ -3,26 +3,17 @@
 
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * A collection of headers on an HTTP request or response.
  */
-public class HashMapHttpHeaders extends HttpHeaders {
+public class HashMapHttpHeaders implements HttpHeaders {
     private Map<String, String> headers;
-
-    private static final ImmutableMap<String, String> BYPASS_LIST = ImmutableMap.of(
-        "x-ms-serviceversion", "A",
-        "x-ms-session-token", "A",
-        "x-ms-consistency-level", "A",
-        "x-ms-activity-id", "A",
-        "x-ms-documentdb-partitionkey", "A");
 
     /**
      * Create an empty HttpHeaders instance.
@@ -70,31 +61,10 @@ public class HashMapHttpHeaders extends HttpHeaders {
      */
     public void put(String name, String value) {
         final String headerKey = normalizeName(name);
-        if (BYPASS_LIST.containsKey(headerKey)) {
-            throw new IllegalArgumentException("Use preferred name for header:" + headerKey);
-        }
-
         if (value == null) {
             headers.remove(headerKey);
         } else {
             headers.put(headerKey, value);
-        }
-    }
-
-    public void putExtended(String name, String value) {
-        final String headerKey = normalizeName(name);
-        if (headerKey.equalsIgnoreCase(HttpConstants.Headers.SESSION_TOKEN)) {
-            SESSION_TOKEN = value;
-        } else if (headerKey.equalsIgnoreCase(HttpConstants.Headers.ACTIVITY_ID)) {
-            ACTIVITY_ID = value;
-        } else if (headerKey.equalsIgnoreCase(HttpConstants.Headers.CONSISTENCY_LEVEL)) {
-            CONSISTENCY_LEVEL = value;
-        } else if (headerKey.equalsIgnoreCase(HttpConstants.Headers.SERVER_VERSION)) {
-            SERVER_VERSION = value;
-        } else if (headerKey.equalsIgnoreCase(HttpConstants.Headers.PARTITION_KEY)) {
-            PARTITION_KEY = value;
-        } else {
-            put(name, value);
         }
     }
 
@@ -120,32 +90,7 @@ public class HashMapHttpHeaders extends HttpHeaders {
      * @return The String value of the header, or null if the header isn't found
      */
     public String getValue(String name) {
-        if (BYPASS_LIST.containsKey(name)) {
-            throw new IllegalArgumentException("Use preferred name for header:" + name);
-        }
-
         return headers.get(normalizeName(name));
-    }
-
-    public String getValueExtended(String name) {
-        final String headerKey = normalizeName(name);
-        if (headerKey.equalsIgnoreCase(HttpConstants.Headers.SESSION_TOKEN)) {
-            return SESSION_TOKEN;
-        }
-        if (headerKey.equalsIgnoreCase(HttpConstants.Headers.ACTIVITY_ID)) {
-            return ACTIVITY_ID;
-        }
-        if (headerKey.equalsIgnoreCase(HttpConstants.Headers.CONSISTENCY_LEVEL)) {
-            return CONSISTENCY_LEVEL;
-        }
-        if (headerKey.equalsIgnoreCase(HttpConstants.Headers.SERVER_VERSION)) {
-            return SERVER_VERSION;
-        }
-        if (headerKey.equalsIgnoreCase(HttpConstants.Headers.PARTITION_KEY)) {
-            return PARTITION_KEY;
-        }
-
-        return getValue(name);
     }
 
     /**
@@ -170,26 +115,7 @@ public class HashMapHttpHeaders extends HttpHeaders {
      * @return the headers as map
      */
     public Map<String, String> exportHeaders() {
-        Map<String, String> newHeaders = new HashMap<>(headers);
-
-        // TODO:kirankk ability to assert on complete list below
-        if (SESSION_TOKEN != null) {
-            newHeaders.put(HttpConstants.Headers.SESSION_TOKEN, SESSION_TOKEN);
-        }
-        if (ACTIVITY_ID != null) {
-            newHeaders.put(HttpConstants.Headers.ACTIVITY_ID, ACTIVITY_ID);
-        }
-        if (CONSISTENCY_LEVEL != null) {
-            newHeaders.put(HttpConstants.Headers.CONSISTENCY_LEVEL, CONSISTENCY_LEVEL);
-        }
-        if (SERVER_VERSION != null) {
-            newHeaders.put(HttpConstants.Headers.SERVER_VERSION, SERVER_VERSION);
-        }
-        if (PARTITION_KEY != null) {
-            newHeaders.put(HttpConstants.Headers.PARTITION_KEY, PARTITION_KEY);
-        }
-
-        return newHeaders;
+        return headers;
     }
 
     private String normalizeName(String input) {
