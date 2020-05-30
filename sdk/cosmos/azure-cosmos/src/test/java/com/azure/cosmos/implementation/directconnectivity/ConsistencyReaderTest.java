@@ -351,7 +351,7 @@ public class ConsistencyReaderTest {
         String partitionKeyRangeId = "1";
 
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + slowReplicaLSN);
+        foundException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + slowReplicaLSN;
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(slowReplicaLSN));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(slowReplicaLSN));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -431,7 +431,7 @@ public class ConsistencyReaderTest {
         String partitionKeyRangeId = "73";
 
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        foundException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + lsn;
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -497,7 +497,7 @@ public class ConsistencyReaderTest {
         long globalCommittedLsn = 651174;
         String partitionKeyRangeId = "73";
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        foundException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + lsn;
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(651175));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(651175));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -561,7 +561,7 @@ public class ConsistencyReaderTest {
         String partitionKeyRangeId = "73";
 
         RequestRateTooLargeException requestTooLargeException = new RequestRateTooLargeException();
-        requestTooLargeException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        requestTooLargeException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + lsn;
         requestTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(651175));
         requestTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(651175));
         requestTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));

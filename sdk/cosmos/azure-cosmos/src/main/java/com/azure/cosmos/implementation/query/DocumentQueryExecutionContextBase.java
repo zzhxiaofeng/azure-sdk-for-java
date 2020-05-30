@@ -148,7 +148,7 @@ implements IDocumentQueryExecutionContext<T> {
                 // irrespective of the chosen replica.
                 // For server resources, which don't span partitions, specify the session token
                 // for correct replica to be chosen for servicing the query result.
-                requestHeaders.put(HttpConstants.Headers.SESSION_TOKEN, feedOptions.getSessionToken());
+                requestHeaders.SessionToken = feedOptions.getSessionToken();
             }
         }
 

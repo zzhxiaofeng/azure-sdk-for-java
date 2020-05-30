@@ -51,10 +51,16 @@ public class HttpHeadersFactory {
         HttpHeaders newHeaders = HttpHeadersFactory.create(nettyHeaders.size());
         nettyHeaders.forEach(e ->
             {
-                if (HttpConstants.Headers.ACTIVITY_ID.equalsIgnoreCase(e.getKey())) {
-                    newHeaders.ActivityId = e.getValue();
-                } else {
-                    newHeaders.put(e.getKey(), e.getValue());
+                switch (e.getKey().toLowerCase()) {
+                    case HttpConstants.Headers.ACTIVITY_ID:
+                        newHeaders.ActivityId = e.getValue();
+                        break;
+                    case HttpConstants.Headers.SESSION_TOKEN:
+                        newHeaders.SessionToken = e.getValue();
+                        break;
+                    default:
+                        newHeaders.put(e.getKey(), e.getValue());
+                        break;
                 }
             });
 

@@ -378,7 +378,7 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.INDEXING_DIRECTIVE, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.MIGRATE_COLLECTION_DIRECTIVE, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONSISTENCY_LEVEL, request);
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.SESSION_TOKEN, request);
+        httpRequestHeaders.SessionToken = request.getHeaders().SessionToken;
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PREFER, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.RESOURCE_TOKEN_EXPIRY, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.ENABLE_SCAN_IN_QUERY, request);

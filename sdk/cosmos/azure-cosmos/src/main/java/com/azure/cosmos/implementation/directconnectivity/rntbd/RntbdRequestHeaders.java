@@ -146,7 +146,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getRestoreParams, BackendHeaders.RESTORE_PARAMS);
         this.fillTokenFromHeader(headers, this::getSecondaryMasterKey, BackendHeaders.SECONDARY_MASTER_KEY);
         this.fillTokenFromHeader(headers, this::getSecondaryReadonlyKey, BackendHeaders.SECONDARY_READONLY_KEY);
-        this.fillTokenFromHeader(headers, this::getSessionToken, Headers.SESSION_TOKEN);
+        this.fillTokenFromHeader(this::getSessionToken, Headers.SESSION_TOKEN, headers.SessionToken);
         this.fillTokenFromHeader(headers, this::getSharedOfferThroughput, Headers.SHARED_OFFER_THROUGHPUT);
         this.fillTokenFromHeader(headers, this::getTargetGlobalCommittedLsn, Headers.TARGET_GLOBAL_COMMITTED_LSN);
         this.fillTokenFromHeader(headers, this::getTargetLsn, Headers.TARGET_LSN);
@@ -1174,9 +1174,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     }
 
     private void fillTokenFromHeader(final HttpHeaders headers, final Supplier<RntbdToken> supplier, final String name) {
-
         final String value = headers.getValue(name);
+        fillTokenFromHeader(supplier, name, value);
+    }
 
+    private void fillTokenFromHeader(final Supplier<RntbdToken> supplier, final String name, final String value) {
         if (StringUtils.isNotEmpty(value)) {
 
             final RntbdToken token = supplier.get();

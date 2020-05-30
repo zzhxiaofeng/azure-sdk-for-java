@@ -16,10 +16,12 @@ import java.util.Map;
 public abstract class HttpHeaders
 {
     private static final ImmutableMap<String, String> BYPASS_LIST = ImmutableMap.of(
+        "x-ms-session-token", "A",
         "x-ms-activity-id", "A"
     );
 
     public String ActivityId = null;
+    public String SessionToken = null;
 
     /**
      * Create a HttpHeaders instance with the provided initial headers.
@@ -132,6 +134,10 @@ public abstract class HttpHeaders
 
         if (ActivityId != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.ACTIVITY_ID))) {
             headerCopy.put(HttpConstants.Headers.ACTIVITY_ID, ActivityId);
+        }
+
+        if (SessionToken != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.SESSION_TOKEN))) {
+            headerCopy.put(HttpConstants.Headers.SESSION_TOKEN, SessionToken);
         }
 
         return headerCopy;

@@ -180,7 +180,7 @@ public class StoreReaderTest {
         long globalCommittedLsn = 651174;
         String partitionKeyRangeId = "73";
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + slowReplicaLSN);
+        foundException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + slowReplicaLSN;
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(slowReplicaLSN));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(slowReplicaLSN));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -270,7 +270,7 @@ public class StoreReaderTest {
         String partitionKeyRangeId = "73";
 
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        foundException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + lsn;
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -339,7 +339,7 @@ public class StoreReaderTest {
         String partitionKeyRangeId = "73";
 
         NotFoundException foundException = new NotFoundException();
-        foundException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        foundException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + lsn;
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(lsn));
         foundException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
@@ -404,7 +404,7 @@ public class StoreReaderTest {
         requestRateTooLargeException.getResponseHeaders().put(HttpConstants.Headers.LSN, Long.toString(lsn));
         requestRateTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn));
         requestRateTooLargeException.getResponseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(lsn));
-        requestRateTooLargeException.getResponseHeaders().put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":-1#" + lsn);
+        requestRateTooLargeException.getResponseHeaders().SessionToken = partitionKeyRangeId + ":-1#" + lsn;
 
         TransportClientWrapper transportClientWrapper = new TransportClientWrapper.Builder.ReplicaResponseBuilder
                 .SequentialBuilder()

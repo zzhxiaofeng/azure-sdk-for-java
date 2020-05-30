@@ -24,15 +24,11 @@ public class SessionTokenHelper {
             throw new IllegalArgumentException("request is null");
         }
 
-        if (originalSessionToken == null) {
-            request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
-        } else {
-            request.getHeaders().put(HttpConstants.Headers.SESSION_TOKEN, originalSessionToken);
-        }
+        request.getHeaders().SessionToken = originalSessionToken;
     }
 
     public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, ISessionContainer sessionContainer) {
-        String originalSessionToken = request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String originalSessionToken = request.getHeaders().SessionToken;
         String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
 
 
@@ -52,11 +48,10 @@ public class SessionTokenHelper {
         }
 
         if (request.requestContext.sessionToken == null) {
-            request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
+            request.getHeaders().SessionToken = null;
         } else {
-
-            request.getHeaders().put(HttpConstants.Headers.SESSION_TOKEN,
-                                     concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, request.requestContext.sessionToken.convertToString()));
+            request.getHeaders().SessionToken =
+                                     concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, request.requestContext.sessionToken.convertToString());
         }
     }
 
@@ -152,10 +147,9 @@ public class SessionTokenHelper {
     }
 
     public static void validateAndRemoveSessionToken(RxDocumentServiceRequest request) {
-        String sessionToken = request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String sessionToken = request.getHeaders().SessionToken;
         if (!Strings.isNullOrEmpty(sessionToken)) {
             getLocalSessionToken(request, sessionToken, StringUtils.EMPTY);
-            request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
         }
     }
 

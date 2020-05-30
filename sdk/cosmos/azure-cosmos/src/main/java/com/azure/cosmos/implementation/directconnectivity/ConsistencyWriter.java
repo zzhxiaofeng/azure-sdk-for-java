@@ -96,7 +96,7 @@ public class ConsistencyWriter {
             return Mono.error(new RequestTimeoutException());
         }
 
-        String sessionToken = entity.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String sessionToken = entity.getHeaders().SessionToken;
 
         return this.writePrivateAsync(entity, timeout, forceRefresh).doOnEach(
             arg -> {

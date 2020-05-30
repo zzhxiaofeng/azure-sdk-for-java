@@ -93,7 +93,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        String originalSessionToken = entity.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String originalSessionToken = entity.getHeaders().SessionToken;
 
         if (entity.requestContext.cosmosDiagnostics == null) {
             entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
@@ -371,7 +371,7 @@ public class StoreReader {
                                 requestSessionToken.v = entity.requestContext.sessionToken;
                             }
                         } else {
-                            entity.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
+                            entity.getHeaders().SessionToken = null;
                         }
 
                         Flux<ReadReplicaResult> y = earlyResultIfNotEnoughReplicas(resolveApiResults, entity, replicaCountToRead);
@@ -446,7 +446,7 @@ public class StoreReader {
             return Mono.error(new GoneException());
         }
 
-        String originalSessionToken = entity.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String originalSessionToken = entity.getHeaders().SessionToken;
         if (entity.requestContext.cosmosDiagnostics == null) {
             entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
         }
@@ -513,7 +513,7 @@ public class StoreReader {
                             // Remove whatever session token can be there in headers.
                             // We don't need it. If it is global - backend will not undersand it.
                             // But there's no point in producing partition local sesison token.
-                            entity.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
+                            entity.getHeaders().SessionToken = null;
                         }
 
 
@@ -716,7 +716,7 @@ public class StoreReader {
             ISessionToken sessionToken = null;
             // SESSION token response header is introduced from getVersion HttpConstants.Versions.v2018_06_18 onwards.
             // Previously it was only a request header
-            if ((headerValue = responseHeaders.getValue(HttpConstants.Headers.SESSION_TOKEN)) != null) {
+            if ((headerValue = responseHeaders.SessionToken) != null) {
                 sessionToken = SessionTokenHelper.parse(headerValue);
             }
 
@@ -790,7 +790,7 @@ public class StoreReader {
 
                 // SESSION token response header is introduced from getVersion HttpConstants.Versions.v2018_06_18 onwards.
                 // Previously it was only a request header
-                headerValue = cosmosException.getResponseHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN);
+                headerValue = cosmosException.getResponseHeaders().SessionToken;
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     sessionToken = SessionTokenHelper.parse(headerValue);
                 }

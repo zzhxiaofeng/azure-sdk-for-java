@@ -418,9 +418,9 @@ class RxGatewayStoreModel implements RxStoreModel {
         HttpHeaders headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().getValue(HttpConstants.Headers.SESSION_TOKEN))) {
+        if (!Strings.isNullOrEmpty(request.getHeaders().SessionToken)) {
             if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
-                request.getHeaders().remove(HttpConstants.Headers.SESSION_TOKEN);
+                request.getHeaders().SessionToken = null;
             }
             return; //User is explicitly controlling the session.
         }
@@ -440,7 +440,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
 
         if (!Strings.isNullOrEmpty(sessionToken)) {
-            headers.put(HttpConstants.Headers.SESSION_TOKEN, sessionToken);
+            headers.SessionToken = sessionToken;
         }
     }
 }

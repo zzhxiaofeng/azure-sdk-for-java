@@ -289,7 +289,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      * @return the session token.
      */
     public String getSessionToken() {
-        return getValueOrNull(header, HttpConstants.Headers.SESSION_TOKEN);
+        return header.SessionToken;
     }
 
     /**

@@ -915,7 +915,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (!Strings.isNullOrEmpty(options.getSessionToken())) {
-            headers.put(HttpConstants.Headers.SESSION_TOKEN, options.getSessionToken());
+            headers.SessionToken = options.getSessionToken();
         }
 
         if (options.getResourceTokenExpirySeconds() != null) {

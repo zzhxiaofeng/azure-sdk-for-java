@@ -84,7 +84,7 @@ public class SessionContainerTest {
                 collectionName + "/docs",  Utils.getUTF8Bytes("content1"), HttpHeadersFactory.create());
 
         HttpHeaders respHeaders = HttpHeadersFactory.create();
-        respHeaders.put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":" + sessionToken);
+        respHeaders.SessionToken = partitionKeyRangeId + ":" + sessionToken;
         respHeaders.put(HttpConstants.Headers.OWNER_FULL_NAME, collectionName);
         respHeaders.put(HttpConstants.Headers.OWNER_ID, collectionRid);
 
@@ -125,7 +125,7 @@ public class SessionContainerTest {
 
         {
             HttpHeaders respHeaders = HttpHeadersFactory.create();
-            respHeaders.put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":" + initialSessionToken);
+            respHeaders.SessionToken = partitionKeyRangeId + ":" + initialSessionToken;
             respHeaders.put(HttpConstants.Headers.OWNER_FULL_NAME, collectionName);
             respHeaders.put(HttpConstants.Headers.OWNER_ID, collectionRid);
 
@@ -136,7 +136,7 @@ public class SessionContainerTest {
 
         {
             HttpHeaders respHeaders = HttpHeadersFactory.create();
-            respHeaders.put(HttpConstants.Headers.SESSION_TOKEN, partitionKeyRangeId + ":" + newSessionTokenInServerResponse);
+            respHeaders.SessionToken = partitionKeyRangeId + ":" + newSessionTokenInServerResponse;
             respHeaders.put(HttpConstants.Headers.OWNER_FULL_NAME, collectionName);
             respHeaders.put(HttpConstants.Headers.OWNER_ID, collectionRid);
 
@@ -669,7 +669,7 @@ public class SessionContainerTest {
 
     private static HttpHeaders newHeadersWithSessionToken(String sessionToken) {
         HttpHeaders httpHeaders = HttpHeadersFactory.create();
-        httpHeaders.put(HttpConstants.Headers.SESSION_TOKEN, sessionToken);
+        httpHeaders.SessionToken = sessionToken;
 
         return httpHeaders;
     }

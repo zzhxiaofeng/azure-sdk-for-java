@@ -377,7 +377,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     private void addSessionTokenHeaderIfPresent(final RntbdToken token, final String headerName, final HttpHeaders responseHeaders) {
         if (token.isPresent()) {
-            responseHeaders.put(headerName, this.partitionKeyRangeId.getValue(String.class) + ":" + this.sessionToken.getValue(String.class));
+            responseHeaders.SessionToken = this.partitionKeyRangeId.getValue(String.class) + ":" + this.sessionToken.getValue(String.class);
         }
     }
 

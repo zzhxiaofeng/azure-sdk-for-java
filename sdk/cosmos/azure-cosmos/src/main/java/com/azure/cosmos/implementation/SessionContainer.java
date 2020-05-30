@@ -167,7 +167,7 @@ public final class SessionContainer implements ISessionContainer {
             return;
         }
 
-        String token = responseHeaders.getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String token = responseHeaders.SessionToken;
 
         if (!Strings.isNullOrEmpty(token)) {
             ValueHolder<ResourceId> resourceId = ValueHolder.initialize(null);
@@ -187,7 +187,7 @@ public final class SessionContainer implements ISessionContainer {
 
         ResourceId resourceId = ResourceId.parse(collectionRid);
         String collectionName = PathsHelper.getCollectionPath(collectionFullName);
-        String token = responseHeaders.getValue(HttpConstants.Headers.SESSION_TOKEN);
+        String token = responseHeaders.SessionToken;
         if (!Strings.isNullOrEmpty(token)) {
             this.setSessionToken(resourceId, collectionName, token);
         }
