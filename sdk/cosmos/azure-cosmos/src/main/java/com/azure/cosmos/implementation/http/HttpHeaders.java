@@ -16,7 +16,9 @@ import java.util.Map;
 public abstract class HttpHeaders
 {
     private static final ImmutableMap<String, String> BYPASS_LIST = ImmutableMap.of(
+        "x-ms-serviceversion", "A",
         "x-ms-session-token", "A",
+        "x-ms-documentdb-partitionkey", "A",
         "x-ms-consistency-level", "A",
         "x-ms-activity-id", "A"
     );
@@ -24,6 +26,8 @@ public abstract class HttpHeaders
     public String ActivityId = null;
     public String SessionToken = null;
     public String ConsistencyLevel = null;
+    public String ServiceVersion = null;
+    public String PartitionKey = null;
 
     /**
      * Create a HttpHeaders instance with the provided initial headers.
@@ -146,6 +150,13 @@ public abstract class HttpHeaders
             headerCopy.put(HttpConstants.Headers.CONSISTENCY_LEVEL, ConsistencyLevel);
         }
 
+        if (ServiceVersion != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.SERVER_VERSION))) {
+            headerCopy.put(HttpConstants.Headers.SERVER_VERSION, ServiceVersion);
+        }
+
+        if (PartitionKey != null && (nameFilerFunc == null || !nameFilerFunc.doExclude(HttpConstants.Headers.PARTITION_KEY))) {
+            headerCopy.put(HttpConstants.Headers.PARTITION_KEY, ServiceVersion);
+        }
         return headerCopy;
     }
 
@@ -165,6 +176,16 @@ public abstract class HttpHeaders
                 case HttpConstants.Headers.CONSISTENCY_LEVEL:
                     if (ConsistencyLevel == null) {
                         ConsistencyLevel = header.getValue();
+                    }
+                    break;
+                case HttpConstants.Headers.SERVER_VERSION:
+                    if (ServiceVersion == null) {
+                        ServiceVersion = header.getValue();
+                    }
+                    break;
+                case HttpConstants.Headers.PARTITION_KEY:
+                    if (PartitionKey == null) {
+                        PartitionKey = header.getValue();
                     }
                     break;
                 default:

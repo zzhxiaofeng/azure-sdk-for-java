@@ -188,7 +188,7 @@ implements IDocumentQueryExecutionContext<T> {
         if (this.resourceTypeEnum.isPartitioned()) {
             if (partitionKey != null) {
                 request.setPartitionKeyInternal(partitionKey);
-                request.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, partitionKey.toJson());
+                request.getHeaders().PartitionKey = partitionKey.toJson();
             }
         }
     }
@@ -204,7 +204,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (this.resourceTypeEnum.isPartitioned()) {
-            boolean hasPartitionKey = request.getHeaders().getValue(HttpConstants.Headers.PARTITION_KEY) != null;
+            boolean hasPartitionKey = request.getHeaders().PartitionKey != null;
             if(!hasPartitionKey){
                 request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
             }

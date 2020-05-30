@@ -81,8 +81,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 PartitionKeyInternal partitionKeyInternal = null;
                 if (feedOptions.getPartitionKey() != null && feedOptions.getPartitionKey() != PartitionKey.NONE) {
                     partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
-                    headers.put(HttpConstants.Headers.PARTITION_KEY,
-                        partitionKeyInternal.toJson());
+                    headers.PartitionKey = partitionKeyInternal.toJson();
 
                 }
                 return this.createDocumentServiceRequest(headers, querySpecForInit, partitionKeyInternal, partitionKeyRange, collectionRid);

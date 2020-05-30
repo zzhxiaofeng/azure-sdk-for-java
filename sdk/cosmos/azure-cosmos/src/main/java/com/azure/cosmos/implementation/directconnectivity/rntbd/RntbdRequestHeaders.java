@@ -130,7 +130,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getFilterBySchemaRid, Headers.FILTER_BY_SCHEMA_RESOURCE_ID);
         this.fillTokenFromHeader(headers, this::getGatewaySignature, Headers.GATEWAY_SIGNATURE);
         this.fillTokenFromHeader(headers, this::getPartitionCount, BackendHeaders.PARTITION_COUNT);
-        this.fillTokenFromHeader(headers, this::getPartitionKey, Headers.PARTITION_KEY);
+        this.fillTokenFromHeader(this::getPartitionKey, Headers.PARTITION_KEY, headers.PartitionKey);
         this.fillTokenFromHeader(headers, this::getPartitionKeyRangeId, Headers.PARTITION_KEY_RANGE_ID);
         this.fillTokenFromHeader(headers, this::getPartitionResourceFilter, BackendHeaders.PARTITION_RESOURCE_FILTER);
         this.fillTokenFromHeader(headers, this::getPostTriggerExclude, Headers.POST_TRIGGER_EXCLUDE);

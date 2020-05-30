@@ -61,6 +61,12 @@ public class HttpHeadersFactory {
                     case HttpConstants.Headers.CONSISTENCY_LEVEL:
                         newHeaders.ConsistencyLevel = e.getValue();
                         break;
+                    case HttpConstants.Headers.SERVER_VERSION:
+                        newHeaders.ServiceVersion = e.getValue();
+                        break;
+                    case HttpConstants.Headers.PARTITION_KEY:
+                        newHeaders.PartitionKey = e.getValue();
+                        break;
                     default:
                         newHeaders.put(e.getKey(), e.getValue());
                         break;

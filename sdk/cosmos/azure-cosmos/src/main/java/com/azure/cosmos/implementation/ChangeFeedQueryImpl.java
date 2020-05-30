@@ -92,7 +92,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
         if (options.getPartitionKey() != null) {
             PartitionKeyInternal partitionKey = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
-            headers.put(HttpConstants.Headers.PARTITION_KEY, partitionKey.toJson());
+            headers.PartitionKey = partitionKey.toJson();
             req.setPartitionKeyInternal(partitionKey);
         }
 

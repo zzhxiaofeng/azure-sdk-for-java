@@ -1035,7 +1035,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
-        request.getHeaders().put(HttpConstants.Headers.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
+        request.getHeaders().PartitionKey = Utils.escapeNonAscii(partitionKeyInternal.toJson());
     }
 
     private static PartitionKeyInternal extractPartitionKeyValueFromDocument(

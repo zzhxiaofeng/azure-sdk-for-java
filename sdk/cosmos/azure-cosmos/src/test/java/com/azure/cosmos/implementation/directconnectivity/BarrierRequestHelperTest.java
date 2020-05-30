@@ -196,7 +196,7 @@ public class BarrierRequestHelperTest {
     }
 
     private String getPartitionKey(RxDocumentServiceRequest req) {
-        return getHeaderValue(req, HttpConstants.Headers.PARTITION_KEY);
+        return req.getHeaders().PartitionKey;
     }
 
     private String getCollectionRid(RxDocumentServiceRequest req) {

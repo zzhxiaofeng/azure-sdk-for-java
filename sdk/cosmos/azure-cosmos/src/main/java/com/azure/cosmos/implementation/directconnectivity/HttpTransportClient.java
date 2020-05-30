@@ -391,7 +391,7 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONTENT_SERIALIZATION_FORMAT, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.CONTINUATION, request.getContinuation());
         httpRequestHeaders.ActivityId = activityId;
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PARTITION_KEY, request);
+        httpRequestHeaders.PartitionKey = request.getHeaders().PartitionKey;
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.Headers.PARTITION_KEY_RANGE_ID, request);
 
         String dateHeader = HttpUtils.getDateHeader(documentServiceRequestHeaders);
