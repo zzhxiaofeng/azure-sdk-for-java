@@ -17,6 +17,9 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.MultithreadEventLoopGroup;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
@@ -72,12 +75,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdServiceEndpoint(
         final Provider provider,
         final Config config,
-        final NioEventLoopGroup group,
+        final MultithreadEventLoopGroup group,
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
         final Bootstrap bootstrap = new Bootstrap()
-            .channel(NioSocketChannel.class)
+            .channel(EpollSocketChannel.class)
             .group(group)
             .option(ChannelOption.ALLOCATOR, config.allocator())
             .option(ChannelOption.AUTO_READ, true)
@@ -309,7 +312,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final AtomicBoolean closed;
         private final Config config;
         private final ConcurrentHashMap<String, RntbdEndpoint> endpoints;
-        private final NioEventLoopGroup eventLoopGroup;
+        private final MultithreadEventLoopGroup eventLoopGroup;
         private final AtomicInteger evictions;
         private final RntbdRequestTimer requestTimer;
         private final RntbdTransportClient transportClient;
@@ -336,7 +339,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 config.requestTimeoutInNanos(),
                 config.requestTimerResolutionInNanos());
 
-            this.eventLoopGroup = new NioEventLoopGroup(options.threadCount(), threadFactory);
+            this.eventLoopGroup = new EpollEventLoopGroup(options.threadCount(), threadFactory);
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
