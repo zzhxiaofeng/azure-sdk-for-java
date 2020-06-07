@@ -75,7 +75,11 @@ public class HttpUtils {
     }
 
     public static void unescape(Map<String, String> headers) {
-        String ownerValue = headers.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
-        headers.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, HttpUtils.urlDecode(ownerValue));
+        if (headers != null) {
+            String ownerValue = headers.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
+            if (ownerValue != null) {
+                headers.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, HttpUtils.urlDecode(ownerValue));
+            }
+        }
     }
 }
