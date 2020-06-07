@@ -29,7 +29,6 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static java.lang.Integer.min;
 
 @JsonPropertyOrder({ "messageLength", "referenceCount", "frame", "headers", "content" })
 public final class RntbdResponse implements ReferenceCounted {
@@ -338,7 +337,7 @@ public final class RntbdResponse implements ReferenceCounted {
             this.content.getBytes(0, content);
         }
 
-        return new StoreResponse(this.getStatus().code(), this.headers.asList(context, this.getActivityId()), content);
+        return new StoreResponse(this.getStatus().code(), this.headers.asMap(context, this.getActivityId()), content);
     }
 
     // endregion
