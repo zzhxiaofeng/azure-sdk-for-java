@@ -255,7 +255,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final Channel channel = (Channel) connected.getNow();
             assert channel != null : "impossible";
             this.releaseToPool(channel);
-            channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
+            channel.writeAndFlush(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
             return requestRecord;
         }
 
