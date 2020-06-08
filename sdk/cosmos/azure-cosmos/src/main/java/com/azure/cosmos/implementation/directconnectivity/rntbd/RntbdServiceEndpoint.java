@@ -87,6 +87,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
             .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
+            .option(ChannelOption.TCP_NODELAY, true)
+            .option(ChannelOption.SO_REUSEADDR, true)
             .remoteAddress(physicalAddress.getHost(), physicalAddress.getPort());
 
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);

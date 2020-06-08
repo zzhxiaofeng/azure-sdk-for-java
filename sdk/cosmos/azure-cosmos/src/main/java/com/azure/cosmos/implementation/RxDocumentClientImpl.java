@@ -256,16 +256,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
-        this.globalEndpointManager.init();
         DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
 
         //Database account should not be null here,
         // this.globalEndpointManager.init() must have been already called
         // hence asserting it
         assert(databaseAccount != null);
-        if (databaseAccount != null) {
-            this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
-        }
+        this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
