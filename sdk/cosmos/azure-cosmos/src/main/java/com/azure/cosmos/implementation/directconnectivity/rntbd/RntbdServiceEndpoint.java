@@ -18,9 +18,11 @@ import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.MultithreadEventLoopGroup;
+import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
@@ -79,8 +81,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
+        final Class<? extends SocketChannel> socketChannelClass = Epoll.isAvailable() ?
+            EpollSocketChannel.class : NioSocketChannel.class;
+
         final Bootstrap bootstrap = new Bootstrap()
-            .channel(EpollSocketChannel.class)
+            .channel(socketChannelClass)
             .group(group)
             .option(ChannelOption.ALLOCATOR, config.allocator())
             .option(ChannelOption.AUTO_READ, true)
@@ -341,7 +346,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 config.requestTimeoutInNanos(),
                 config.requestTimerResolutionInNanos());
 
-            this.eventLoopGroup = new EpollEventLoopGroup(options.threadCount(), threadFactory);
+            if (Epoll.isAvailable()) {
+                this.eventLoopGroup = new EpollEventLoopGroup(options.threadCount(), threadFactory);
+            } else {
+                this.eventLoopGroup = new NioEventLoopGroup(options.threadCount(), threadFactory);
+            }
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
