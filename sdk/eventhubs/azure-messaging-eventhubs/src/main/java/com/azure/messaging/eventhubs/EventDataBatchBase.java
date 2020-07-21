@@ -106,9 +106,9 @@ abstract class EventDataBatchBase {
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
      * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
      */
-    public boolean tryAdd(final EventData eventData) {
+    boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
+            throw logger.logExceptionAsWarning(new NullPointerException("eventData cannot be null"));
         }
         EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
 
