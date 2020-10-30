@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.6.0-alpha.20201005.0</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -115,6 +115,7 @@
                 <include>com.azure:azure-core-http-netty:[1.7.0-alpha.20201001.0]</include>
                 <include>com.azure:azure-core:[1.10.0-alpha.20201005.0]</include>
                 <include>com.azure:azure-identity:[1.2.0-alpha.20201001.0]</include>
+                <include>com.azure:azure-core-test:[1.6.0-alpha.20201005.0]</include>
               </includes>
             </bannedDependencies>
           </rules>
