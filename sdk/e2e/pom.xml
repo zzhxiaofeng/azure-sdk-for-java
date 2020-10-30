@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.7.0-alpha.20201001.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -112,6 +112,7 @@
                 <include>com.azure:azure-identity:[1.2.0-beta.2]</include>
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.11.3]</include>
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.11.3]</include>
+                <include>com.azure:azure-core-http-netty:[1.7.0-alpha.20201001.0]</include>
               </includes>
             </bannedDependencies>
           </rules>
