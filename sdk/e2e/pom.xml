@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.10.0-alpha.20201005.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.2.0-alpha.20201001.0</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -113,6 +113,8 @@
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.11.3]</include>
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.11.3]</include>
                 <include>com.azure:azure-core-http-netty:[1.7.0-alpha.20201001.0]</include>
+                <include>com.azure:azure-core:[1.10.0-alpha.20201005.0]</include>
+                <include>com.azure:azure-identity:[1.2.0-alpha.20201001.0]</include>
               </includes>
             </bannedDependencies>
           </rules>
